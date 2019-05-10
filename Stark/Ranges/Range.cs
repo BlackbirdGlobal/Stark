@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stark
+namespace Stark.Ranges
 {
     public class Range
     {

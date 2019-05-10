@@ -62,7 +62,7 @@ namespace Stark
                 rngs.Add(new Range { L = c1, R = c2 });
             }
 
-            var nonOverlapping = rngs.MergeOverlapping();
+            var nonOverlapping = rngs.MergeOverlappingRanges();
 
             return nonOverlapping.Sum(x => x.Length);
 

@@ -5,7 +5,7 @@ namespace Stark.Ranges
 {
     public static class Extensions
     {
-        public static IEnumerable<Range> MergeOverlapping(this IEnumerable<Range> self)
+        public static IEnumerable<Range> MergeOverlappingRanges(this IEnumerable<Range> self)
         {
             var nonOverlapping = new List<Range>();
             var rngs = self.ToList();
@@ -17,13 +17,9 @@ namespace Stark.Ranges
                 var merged = r;
                 if (rngs.Any(x => r.IsOverlapping(x)))
                 {
-                    var overlapping = rngs.Where(x => r.IsOverlapping(x)).ToList();
-
-                    foreach (var o in overlapping)
-                    {
-                        merged = merged.Merge(o);
-                        rngs.Remove(o);
-                    }
+                    var overlapping = rngs.FirstOrDefault(x => r.IsOverlapping(x));
+                    rngs.Remove(overlapping);
+                    merged = merged.Merge(overlapping);
                     rngs.Add(merged);
                 }
                 else
