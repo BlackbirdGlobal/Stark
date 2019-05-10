@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Stark.Graphs.Builders;
 using System.Globalization;
+using Stark.Ranges;
 
 namespace Stark
 {
@@ -61,26 +62,7 @@ namespace Stark
                 rngs.Add(new Range { L = c1, R = c2 });
             }
 
-            var nonOverlapping = new List<Range>();
-
-            while (rngs.Any())
-            {
-                var r = rngs.First();
-                rngs.Remove(r);
-                var merged = r;
-                if(rngs.Any(x => r.IsOverlapping(x)))
-                {
-                    var overlapping = rngs.Where(x => r.IsOverlapping(x)).ToList();
-
-                    foreach (var o in overlapping)
-                    {
-                        merged = merged.Merge(o);
-                        rngs.Remove(o);
-                    }
-                    rngs.Add(merged);
-                } else
-                    nonOverlapping.Add(merged);
-            }
+            var nonOverlapping = rngs.MergeOverlapping();
 
             return nonOverlapping.Sum(x => x.Length);
 
