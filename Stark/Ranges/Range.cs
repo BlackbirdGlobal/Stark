@@ -7,7 +7,7 @@ namespace Stark
         public long L { get; set; }
         public long R { get; set; }
 
-        public long Length { get { return R - L; } }
+        public long Length { get { return 1 + R - L; } }
 
         public bool IsOverlapping(Range r)
         {

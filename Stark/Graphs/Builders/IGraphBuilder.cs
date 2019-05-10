@@ -1,9 +1,8 @@
-﻿using Stark.Graphs;
-using System;
+﻿using System;
 
-namespace Sbx
+namespace Stark.Graphs.Builders
 {
-    public interface IGraphBuilder<M,T, D> where T: IEquatable<T>
+    public interface IGraphBuilder<M, T, D> where T : IEquatable<T>
     {
         GraphNode<T, D> Build(M s);
     }
