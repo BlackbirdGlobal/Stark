@@ -1,13 +1,9 @@
 ﻿using Stark.Graphs;
 using Stark.Graphs.BFS;
 using System;
-using System.Net.Http;
 using System.Numerics;
 using System.Linq;
-using System.Collections.Generic;
 using Stark.Graphs.Builders;
-using System.Globalization;
-using Stark.Ranges;
 
 namespace Stark
 {
@@ -15,7 +11,14 @@ namespace Stark
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(GridlandMetro(1, 5, 3, new[] { new[] { 1, 1, 2 }, new[] { 1, 2, 4 }, new[] { 1, 3, 5 } }));
+            _matrix = new[] {
+                "XXXXXXXXXXXXXXXXX",
+                "XXX.XX.XXXXXXXXXX",
+                "XX.*..M.XXXXXXXXX",
+                "XXX.XX.XXXXXXXXXX",
+                "XXXXXXXXXXXXXXXXX" };
+            Console.WriteLine(CountLuck(1));
+            Console.ReadKey();
         }
 
         private static string[] _matrix;
@@ -37,35 +40,6 @@ namespace Stark
             if (!r.Found)
                 return "Oops!";
             return r.Result.AdditionalData == k ? "Impressed" : "Oops!";
-        }
-
-        static BigInteger GridlandMetro(long n, long m, int k, int[][] track) 
-        {
-            BigInteger r = 0;
-            var grouped = track.GroupBy(x => x.First());
-            foreach(var g in grouped){
-                r += Count(g);
-            }
-            BigInteger a = (BigInteger)n * m;
-            return a-r;
-        }
-
-        private static BigInteger Count(IGrouping<int, int[]> g)
-        {
-            var rngs = new List<Range>();
-
-            foreach(var rng in g)
-            {
-                var r = rng[0];
-                var c1 = rng[1];
-                var c2 = rng[2];
-                rngs.Add(new Range { L = c1, R = c2 });
-            }
-
-            var nonOverlapping = rngs.MergeOverlappingRanges();
-
-            return nonOverlapping.Sum(x => x.Length);
-
         }
     }
 }

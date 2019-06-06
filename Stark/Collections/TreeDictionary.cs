@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Stark.Trees;
 
-namespace Stark.Trees
+namespace Stark.Collections
 {
-    class TreeDictionary<K, V> : IDictionary<K, V> where K:IComparable<K>
+    public class TreeDictionary<K, V> : IDictionary<K, V> where K:IComparable<K>
     {
         private readonly ITree<K, V> _tree;
 
