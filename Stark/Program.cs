@@ -3,7 +3,9 @@ using Stark.Graphs.BFS;
 using System;
 using System.Numerics;
 using System.Linq;
+using Stark.Collections;
 using Stark.Graphs.Builders;
+using Stark.Trees;
 
 namespace Stark
 {
@@ -11,14 +13,11 @@ namespace Stark
     {
         static void Main(string[] args)
         {
-            _matrix = new[] {
-                "XXXXXXXXXXXXXXXXX",
-                "XXX.XX.XXXXXXXXXX",
-                "XX.*..M.XXXXXXXXX",
-                "XXX.XX.XXXXXXXXXX",
-                "XXXXXXXXXXXXXXXXX" };
-            Console.WriteLine(CountLuck(1));
-            Console.ReadKey();
+            var d = new TreeDictionary<string,string>( new BinaryTree<string, string>());
+            d.Add("Foo","Bar");
+            d.Add("Marko","Polo");
+            d.TryGetValue("Marko", out string r);
+            Console.WriteLine(r);
         }
 
         private static string[] _matrix;
