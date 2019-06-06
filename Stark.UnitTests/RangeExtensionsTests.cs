@@ -1,5 +1,4 @@
 using Stark.Ranges;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -14,9 +13,9 @@ namespace Stark.UnitTests
             //Arrange
             var ranges = new List<Range>
             {
-                new Range() { L = 100, R = 130 },
-                new Range() { L = 130, R = 150 },
-                new Range() { L = 150, R = 200 }
+                new Range { L = 100, R = 130 },
+                new Range { L = 130, R = 150 },
+                new Range { L = 150, R = 200 }
             };
             //Act
             var merged = ranges.MergeOverlappingRanges();
@@ -34,10 +33,10 @@ namespace Stark.UnitTests
             //Arrange
             var ranges = new List<Range>
             {
-                new Range() { L = 100, R = 130 },
-                new Range() { L = 130, R = 150 },
-                new Range() { L = 150, R = 200 },
-                new Range() { L = 201, R = 500 }
+                new Range { L = 100, R = 130 },
+                new Range { L = 130, R = 150 },
+                new Range { L = 150, R = 200 },
+                new Range { L = 201, R = 500 }
             };
             //Act
             var merged = ranges.MergeOverlappingRanges().OrderBy(x => x.L);
