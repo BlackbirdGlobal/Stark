@@ -26,7 +26,7 @@ namespace Stark.Collections
 
         public void Add(KeyValuePair<K, V> item)
         {
-            _tree.Insert(item.Key, item.Value);
+            _tree.Add(item.Key, item.Value);
         }
 
         public void Clear()
@@ -36,7 +36,7 @@ namespace Stark.Collections
 
         public bool Contains(KeyValuePair<K, V> item)
         {
-            return _tree.Find(item.Key) != null;
+            return _tree.Get(item.Key) != null;
         }
 
         public void CopyTo(KeyValuePair<K, V>[] array, int arrayIndex)
@@ -46,36 +46,36 @@ namespace Stark.Collections
 
         public bool Remove(KeyValuePair<K, V> item)
         {
-            return _tree.Delete(item.Key);
+            return _tree.Remove(item.Key);
         }
 
         public int Count => _tree.Count;
         public bool IsReadOnly => false;
         public void Add(K key, V value)
         {
-            _tree.Insert(key, value);
+            _tree.Add(key, value);
         }
 
         public bool ContainsKey(K key)
         {
-            return _tree.Find(key) != null;
+            return _tree.Get(key) != null;
         }
 
         public bool Remove(K key)
         {
-            return _tree.Delete(key);
+            return _tree.Remove(key);
         }
 
         public bool TryGetValue(K key, out V value)
         {
-            value = _tree.Find(key);
+            value = _tree.Get(key);
             return value != null;
         }
 
         public V this[K key]
         {
-            get => _tree.Find(key);
-            set => throw new NotImplementedException();
+            get => _tree.Get(key);
+            set { _tree.Remove(key); _tree.Add(key, value); }
         }
 
         public ICollection<K> Keys { get; }

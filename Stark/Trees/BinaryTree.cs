@@ -8,7 +8,7 @@ namespace Stark.Trees
         private int _count = 0;
         private BinaryNode<K, V> _root;
         
-        public void Insert(K key, V value)
+        public void Add(K key, V value)
         {
             var node = new BinaryNode<K, V> {Key = key, Value = value};
             if (_root == null)
@@ -30,13 +30,18 @@ namespace Stark.Trees
             _count++;
         }
 
-        public V Find(K key)
+        public V Get(K key)
         {
-            if(_root == null)
+            return GetNode(key).Value;
+        }
+
+        private BinaryNode<K, V> GetNode(K key)
+        {
+            if (_root == null)
                 throw new KeyNotFoundException();
-            
+
             var result = _root;
-            
+
             while (result.HasChildren || result.Key.CompareTo(key) == 0)
             {
                 switch (key.CompareTo(result.Key))
@@ -48,15 +53,17 @@ namespace Stark.Trees
                         result = result.Right;
                         break;
                     case int cmp when cmp == 0:
-                        return result.Value;
+                        return result;
                 }
             }
             throw new KeyNotFoundException();
         }
 
-        public bool Delete(K key)
+        public bool Remove(K key)
         {
-            throw new NotImplementedException();
+            var node = GetNode(key);
+
+            return true;
         }
 
         public void Clear()

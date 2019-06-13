@@ -6,11 +6,11 @@ namespace Stark.Trees
 {
     public interface ITree<in K, V> where K:IComparable<K>
     {
-        void Insert(K key, V value);
+        void Add(K key, V value);
 
-        V Find(K key);
+        V Get(K key);
 
-        bool Delete(K key);
+        bool Remove(K key);
 
         void Clear();
 
