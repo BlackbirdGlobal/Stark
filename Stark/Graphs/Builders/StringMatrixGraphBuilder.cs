@@ -9,8 +9,7 @@ namespace Stark.Graphs.Builders
         public char Obstacle = 'X';
         public char Start = 'M';
         public char Destination = '*';
-        public char Path = '.';
-        private Queue<Entry<char, int>> Q = new Queue<Entry<char, int>>();
+        private readonly Queue<Entry<char, int>> Q = new Queue<Entry<char, int>>();
 
         public GraphNode<char, int> Build(string[] s)
         {

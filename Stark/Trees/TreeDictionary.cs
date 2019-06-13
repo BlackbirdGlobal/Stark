@@ -57,7 +57,7 @@ namespace Stark.Trees
 
         public bool ContainsKey(K key)
         {
-            throw new NotImplementedException();
+            return _tree.Find(key) != null;
         }
 
         public bool Remove(K key)
@@ -73,7 +73,7 @@ namespace Stark.Trees
 
         public V this[K key]
         {
-            get => throw new NotImplementedException();
+            get => _tree.Find(key);
             set => throw new NotImplementedException();
         }
 
