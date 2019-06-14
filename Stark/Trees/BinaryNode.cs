@@ -15,5 +15,6 @@ namespace Stark.Trees
         public bool HasLeftChild => Left != null;
         public bool HasRightChild => Right != null;
         public bool HasChildren => HasLeftChild || HasRightChild;
+        public bool HasBothChildren => HasLeftChild && HasRightChild;
     }
 }
