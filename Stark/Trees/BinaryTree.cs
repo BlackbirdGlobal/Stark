@@ -12,6 +12,7 @@ namespace Stark.Trees
         public void Add(K key, V value)
         {
             var node = new BinaryNode<K, V> {Key = key, Value = value};
+            _count++;
             if (_root == null)
             {
                 _root = node;
@@ -28,7 +29,6 @@ namespace Stark.Trees
             {
                 parent.Right = node;
             }
-            _count++;
         }
 
         public V Get(K key)
@@ -105,6 +105,7 @@ namespace Stark.Trees
                     _root = null;
                 }
             }
+            _count--;
             return true;
         }
 

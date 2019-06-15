@@ -72,6 +72,21 @@ namespace Stark.UnitTests
             {
                 Assert.NotEqual(3, p.Key);
             }
+            Assert.Equal(3, dictionary.Count);
+        }
+
+        [Fact]
+        public void Add_Added()
+        {
+            //Arrange
+            var d = new TreeDictionary<int,int>(new BinaryTree<int, int>());
+            //Act
+            d.Add(100, 1500);
+            //Assert
+            Assert.Single(d);
+            Assert.Equal(1500, d[100]);
+            // ReSharper disable once xUnit2013
+            Assert.Equal(1, d.Count);
         }
     }
 }

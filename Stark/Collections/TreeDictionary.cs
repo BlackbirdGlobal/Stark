@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Stark.Trees;
 
 namespace Stark.Collections
@@ -8,6 +9,7 @@ namespace Stark.Collections
     public class TreeDictionary<K, V> : IDictionary<K, V> where K:IComparable<K>
     {
         private readonly ITree<K, V> _tree;
+        private IEnumerable<KeyValuePair<K, V>> Collection => _tree as IEnumerable<KeyValuePair<K, V>>;
 
         public TreeDictionary(ITree<K, V> tree)
         {
@@ -16,8 +18,7 @@ namespace Stark.Collections
 
         public IEnumerator<KeyValuePair<K, V>> GetEnumerator()
         {
-            var enumerable = _tree as IEnumerable<KeyValuePair<K,V>>;
-            return enumerable?.GetEnumerator();
+            return Collection?.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -42,7 +43,13 @@ namespace Stark.Collections
 
         public void CopyTo(KeyValuePair<K, V>[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (Collection == null)
+                return;
+            var i = arrayIndex;
+            foreach (var p in Collection)
+            {
+                array[i++] = p;
+            }
         }
 
         public bool Remove(KeyValuePair<K, V> item)
@@ -79,7 +86,7 @@ namespace Stark.Collections
             set { _tree.Remove(key); _tree.Add(key, value); }
         }
 
-        public ICollection<K> Keys { get; }
-        public ICollection<V> Values { get; }
+        public ICollection<K> Keys => Collection?.Select(x => x.Key).ToArray();
+        public ICollection<V> Values => Collection?.Select(x => x.Value).ToArray();
     }
 }
