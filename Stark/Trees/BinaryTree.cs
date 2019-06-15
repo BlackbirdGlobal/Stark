@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Stark.Trees
 {
-    public class BinaryTree<K,V>: ITree<K,V> where K:IComparable<K>
+    public class BinaryTree<K,V>: ITree<K,V>, IEnumerable<KeyValuePair<K,V>> where K:IComparable<K>
     {
         private int _count = 0;
         private BinaryNode<K, V> _root;
@@ -142,6 +143,64 @@ namespace Stark.Trees
                 tmp = tmp.Right;
             }
             return tmp;
+        }
+
+        public IEnumerator<KeyValuePair<K, V>> GetEnumerator()
+        {
+            return new BinaryTreeEnumerator<K,V>(_root);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new BinaryTreeEnumerator<K,V>(_root);
+        }
+
+        public bool ContainsKey(K key)
+        {
+            var node = this.GetNode(key);
+            return node != null;
+        }
+    }
+
+    class BinaryTreeEnumerator<K, V> : IEnumerator<KeyValuePair<K, V>> where K:IComparable<K>
+    {
+        private BinaryNode<K,V> _tree;
+        private KeyValuePair<K,V> _current;
+        private Queue<BinaryNode<K,V>> _q; 
+
+        public BinaryTreeEnumerator(BinaryNode<K,V> tree)
+        {
+            _tree = tree;
+            _q = new Queue<BinaryNode<K, V>>();
+            _q.Enqueue(tree);
+        }
+        public KeyValuePair<K, V> Current => _current;
+
+        object IEnumerator.Current => _current;
+
+        public void Dispose()
+        {
+            _tree = null;
+        }
+
+        public bool MoveNext()
+        {
+            if(_q.Count > 0){
+                var node = _q.Dequeue();
+                if(node.HasLeftChild)
+                    _q.Enqueue(node.Left);
+                if(node.HasRightChild)
+                    _q.Enqueue(node.Right);
+                _current = new KeyValuePair<K,V>(node.Key, node.Value);
+                return true;
+            }
+            return false;
+        }
+
+        public void Reset()
+        {
+            _q.Clear();
+            _q.Enqueue(_tree);
         }
     }
 }

@@ -16,7 +16,8 @@ namespace Stark.Collections
 
         public IEnumerator<KeyValuePair<K, V>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            var enumerable = _tree as IEnumerable<KeyValuePair<K,V>>;
+            return enumerable?.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -36,7 +37,7 @@ namespace Stark.Collections
 
         public bool Contains(KeyValuePair<K, V> item)
         {
-            return _tree.Get(item.Key) != null;
+            return _tree.ContainsKey(item.Key) && _tree.Get(item.Key).Equals(item.Value);
         }
 
         public void CopyTo(KeyValuePair<K, V>[] array, int arrayIndex)
@@ -58,7 +59,7 @@ namespace Stark.Collections
 
         public bool ContainsKey(K key)
         {
-            return _tree.Get(key) != null;
+            return _tree.ContainsKey(key);
         }
 
         public bool Remove(K key)

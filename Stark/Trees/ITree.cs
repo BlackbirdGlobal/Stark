@@ -15,5 +15,7 @@ namespace Stark.Trees
         void Clear();
 
         int Count { get; }
+
+        bool ContainsKey(K key);
     }
 }
