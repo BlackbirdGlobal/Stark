@@ -88,5 +88,16 @@ namespace Stark.UnitTests
             // ReSharper disable once xUnit2013
             Assert.Equal(1, d.Count);
         }
+
+        [Fact]
+        public void Indexer_SetValue_GetValue()
+        {
+            //Arrange
+            var d = new TreeDictionary<string, string>(new BinaryTree<string, string>());
+            //Act
+            d["test"] = "testValue";
+            //Assert
+            Assert.Equal("testValue", d["test"]);
+        }
     }
 }
