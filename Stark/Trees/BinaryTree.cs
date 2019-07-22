@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Stark.UnitTests")]
 namespace Stark.Trees
 {
     public class BinaryTree<K,V>: ITree<K,V>, IEnumerable<KeyValuePair<K,V>> where K:IComparable<K>
     {
         private int _count = 0;
-        private BinaryNode<K, V> _root;
+        BinaryNode<K, V> _root;
         
         public void Add(K key, V value)
         {

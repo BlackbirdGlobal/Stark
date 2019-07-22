@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace Stark.Graphs.BFS
 {
-    class BFSSearcher<T, D> : IGraphSearcher<T, D> where T : IEquatable<T>
+    class BfsSearcher<T, D> : IGraphSearcher<T, D> where T : IEquatable<T>
     {
         public GraphNode<T, D> Graph { get; set; }
         private Queue<GraphNode<T, D>> Q { get; set; }
 
-        public BFSSearcher(GraphNode<T, D> root)
+        public BfsSearcher(GraphNode<T, D> root)
         {
             Graph = root;
             Q = new Queue<GraphNode<T, D>>();
