@@ -8,7 +8,7 @@ namespace Blackbird.Stark.Trees
 {
     public class BinaryTree<TK,TV>: ITree<TK,TV>, IEnumerable<KeyValuePair<TK,TV>> where TK:IComparable<TK>
     {
-        private BinaryNode<TK, TV> _root;
+        internal BinaryNode<TK, TV> _root;
         
         public void Add(TK key, TV value)
         {

@@ -25,10 +25,9 @@ namespace Blackbird.Stark.UnitTests
         public void ContainsKey_InsertNotNull_ReturnsTrue()
         {
             //Arrange
-            var dictionary = new TreeDictionary<string, string>(new BinaryTree<string, string>());
             const string key = "testKey";
             const string val = "test";
-            dictionary.Add(key, val);
+            var dictionary = new TreeDictionary<string, string>(new BinaryTree<string, string>()) {{key, val}};
             //Act
             var result = dictionary.ContainsKey(key);
             //Assert
@@ -86,7 +85,7 @@ namespace Blackbird.Stark.UnitTests
             Assert.Single(d);
             Assert.Equal(1500, d[100]);
             // ReSharper disable once xUnit2013
-            Assert.Equal(1, d.Count);
+            Assert.Single(d);
         }
 
         [Fact]
