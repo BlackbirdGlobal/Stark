@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Stark.Collections
+namespace Blackbird.Stark.Collections
 {
     public class LinkedList<T> : ICollection<T>, IList<T>
     {

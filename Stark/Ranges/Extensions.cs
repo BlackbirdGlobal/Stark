@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Stark.Ranges
+namespace Blackbird.Stark.Ranges
 {
     public static class Extensions
     {

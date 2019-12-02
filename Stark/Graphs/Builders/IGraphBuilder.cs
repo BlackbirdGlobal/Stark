@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stark.Graphs.Builders
+namespace Blackbird.Stark.Graphs.Builders
 {
     public interface IGraphBuilder<M, T, D> where T : IEquatable<T>
     {

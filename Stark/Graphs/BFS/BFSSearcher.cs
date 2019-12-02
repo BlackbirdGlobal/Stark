@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Stark.Graphs.BFS
+namespace Blackbird.Stark.Graphs.BFS
 {
     class BfsSearcher<T, D> : IGraphSearcher<T, D> where T : IEquatable<T>
     {

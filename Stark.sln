@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stark", "Stark\Stark.csproj", "{35BCBFB4-F4E9-437B-A4CE-A8CF844B2A4B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stark.UnitTests", "Stark.UnitTests\Stark.UnitTests.csproj", "{3FAF56DA-1F7F-415C-AAE0-E994C0C0EA51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackbird.Stark.UnitTests", "Stark.UnitTests\Blackbird.Stark.UnitTests.csproj", "{3FAF56DA-1F7F-415C-AAE0-E994C0C0EA51}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE7F8B1B-665C-484B-ABED-415205D9BB3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stark.App", "Stark.App\Stark.App.csproj", "{F7E5B3A8-D482-4A25-A102-8EDEB6BF8C34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackbird.Stark.App", "Stark.App\Blackbird.Stark.App.csproj", "{F7E5B3A8-D482-4A25-A102-8EDEB6BF8C34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackbird.Stark", "Stark\Blackbird.Stark.csproj", "{440C295B-A0D0-4CC9-8218-52A2536F0955}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{35BCBFB4-F4E9-437B-A4CE-A8CF844B2A4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35BCBFB4-F4E9-437B-A4CE-A8CF844B2A4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35BCBFB4-F4E9-437B-A4CE-A8CF844B2A4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35BCBFB4-F4E9-437B-A4CE-A8CF844B2A4B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3FAF56DA-1F7F-415C-AAE0-E994C0C0EA51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3FAF56DA-1F7F-415C-AAE0-E994C0C0EA51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FAF56DA-1F7F-415C-AAE0-E994C0C0EA51}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,6 +25,10 @@ Global
 		{F7E5B3A8-D482-4A25-A102-8EDEB6BF8C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7E5B3A8-D482-4A25-A102-8EDEB6BF8C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7E5B3A8-D482-4A25-A102-8EDEB6BF8C34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{440C295B-A0D0-4CC9-8218-52A2536F0955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{440C295B-A0D0-4CC9-8218-52A2536F0955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{440C295B-A0D0-4CC9-8218-52A2536F0955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{440C295B-A0D0-4CC9-8218-52A2536F0955}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

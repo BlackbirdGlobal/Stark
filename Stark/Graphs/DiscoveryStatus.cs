@@ -1,4 +1,4 @@
-﻿namespace Stark.Graphs
+﻿namespace Blackbird.Stark.Graphs
 {
     public enum DiscoveryStatus
     {

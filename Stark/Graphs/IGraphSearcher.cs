@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stark.Graphs
+namespace Blackbird.Stark.Graphs
 {
     interface IGraphSearcher<T, D> where T : IEquatable<T>
     {

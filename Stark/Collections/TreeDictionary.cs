@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Stark.Trees;
+using Blackbird.Stark.Trees;
 
-namespace Stark.Collections
+namespace Blackbird.Stark.Collections
 {
     public class TreeDictionary<K, V> : IDictionary<K, V> where K:IComparable<K>
     {

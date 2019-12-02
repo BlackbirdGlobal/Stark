@@ -1,4 +1,4 @@
-﻿namespace Stark.Collections
+﻿namespace Blackbird.Stark.Collections
 {
     class ListNode<T>
     {

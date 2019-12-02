@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Stark.Collections;
-using Stark.Trees;
+using Blackbird.Stark.Collections;
+using Blackbird.Stark.Trees;
 using Xunit;
 
 namespace Stark.UnitTests

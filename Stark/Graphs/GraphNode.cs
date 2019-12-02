@@ -1,8 +1,7 @@
-﻿using Stark.Graphs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Stark.Graphs
+namespace Blackbird.Stark.Graphs
 {
     public class GraphNode<T, D> where T : IEquatable<T>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stark.Ranges
+namespace Blackbird.Stark.Ranges
 {
     public class Range
     {

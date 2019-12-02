@@ -1,4 +1,4 @@
-﻿using Stark.Collections;
+﻿using Blackbird.Stark.Collections;
 using Xunit;
 
 namespace Stark.UnitTests

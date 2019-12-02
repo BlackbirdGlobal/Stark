@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO.Enumeration;
-using System.Text;
 
-namespace Stark.Trees
+namespace Blackbird.Stark.Trees
 {
     public interface ITree<in K, V> where K:IComparable<K>
     {

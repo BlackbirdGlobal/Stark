@@ -1,7 +1,6 @@
-﻿using Stark.Graphs;
-using System;
+﻿using System;
 
-namespace Stark.Graphs
+namespace Blackbird.Stark.Graphs
 {
     public struct SearchResult<T, D> where T : IEquatable<T>
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using Stark.Collections;
-using Stark.Trees;
+using Blackbird.Stark.Collections;
+using Blackbird.Stark.Trees;
 
-namespace Stark.App
+namespace Blackbird.Stark.App
 {
     class Program
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Stark.UnitTests")]
-namespace Stark.Trees
+namespace Blackbird.Stark.Trees
 {
     public class BinaryTree<K,V>: ITree<K,V>, IEnumerable<KeyValuePair<K,V>> where K:IComparable<K>
     {

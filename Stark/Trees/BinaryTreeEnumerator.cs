@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Stark.Trees
+namespace Blackbird.Stark.Trees
 {
     internal class BinaryTreeEnumerator<K, V> : IEnumerator<KeyValuePair<K, V>> where K:IComparable<K>
     {
