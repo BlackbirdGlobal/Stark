@@ -1,7 +1,7 @@
 ﻿using Blackbird.Stark.Trees;
 using Xunit;
 
-namespace Stark.UnitTests
+namespace Blackbird.Stark.UnitTests
 {
     public class BinaryTreeTests
     {

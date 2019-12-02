@@ -1,7 +1,7 @@
 ﻿using Blackbird.Stark.Collections;
 using Xunit;
 
-namespace Stark.UnitTests
+namespace Blackbird.Stark.UnitTests
 {
     public class LinkedListTest
     {

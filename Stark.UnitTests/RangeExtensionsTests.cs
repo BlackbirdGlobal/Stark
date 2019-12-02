@@ -3,7 +3,7 @@ using System.Linq;
 using Blackbird.Stark.Ranges;
 using Xunit;
 
-namespace Stark.UnitTests
+namespace Blackbird.Stark.UnitTests
 {
     public class RangeExtensionsTests
     {

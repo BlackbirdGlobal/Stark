@@ -3,18 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Stark.UnitTests")]
+[assembly: InternalsVisibleTo("Blackbird.Stark.UnitTests")]
 namespace Blackbird.Stark.Trees
 {
-    public class BinaryTree<K,V>: ITree<K,V>, IEnumerable<KeyValuePair<K,V>> where K:IComparable<K>
+    public class BinaryTree<TK,TV>: ITree<TK,TV>, IEnumerable<KeyValuePair<TK,TV>> where TK:IComparable<TK>
     {
-        private int _count = 0;
-        BinaryNode<K, V> _root;
+        private BinaryNode<TK, TV> _root;
         
-        public void Add(K key, V value)
+        public void Add(TK key, TV value)
         {
-            var node = new BinaryNode<K, V> {Key = key, Value = value};
-            _count++;
+            var node = new BinaryNode<TK, TV> {Key = key, Value = value};
+            Count++;
             if (_root == null)
             {
                 _root = node;
@@ -33,13 +32,13 @@ namespace Blackbird.Stark.Trees
             }
         }
 
-        public V Get(K key)
+        public TV Get(TK key)
         {
             var node = GetNode(key);
-            return node == null? default(V) : node.Value;
+            return node != null? node.Value : default;
         }
 
-        private BinaryNode<K, V> GetNode(K key)
+        private BinaryNode<TK, TV> GetNode(TK key)
         {
             if (_root == null)
                 return null;
@@ -63,7 +62,7 @@ namespace Blackbird.Stark.Trees
             return null;
         }
 
-        public bool Remove(K key)
+        public bool Remove(TK key)
         {
             var node = GetNode(key);
             if(node == null)
@@ -107,7 +106,7 @@ namespace Blackbird.Stark.Trees
                     _root = null;
                 }
             }
-            _count--;
+            Count--;
             return true;
         }
 
@@ -116,9 +115,9 @@ namespace Blackbird.Stark.Trees
             _root = null;
         }
 
-        public int Count => _count;
+        public int Count { get; private set; } = 0;
 
-        private BinaryNode<K, V> FindParentToInsert(K key)
+        private BinaryNode<TK, TV> FindParentToInsert(TK key)
         {
             if (_root == null)
                 return null;
@@ -140,7 +139,8 @@ namespace Blackbird.Stark.Trees
             return result;
         }
     
-        private BinaryNode<K, V> FindClosestSmallerValue(BinaryNode<K,V> node){
+        private static BinaryNode<TK, TV> FindClosestSmallerValue(BinaryNode<TK,TV> node)
+        {
             var tmp = node.Left;
             while(tmp.Right != null){
                 tmp = tmp.Right;
@@ -148,19 +148,19 @@ namespace Blackbird.Stark.Trees
             return tmp;
         }
 
-        public IEnumerator<KeyValuePair<K, V>> GetEnumerator()
+        public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
         {
-            return new BinaryTreeEnumerator<K,V>(_root);
+            return new BinaryTreeEnumerator<TK,TV>(_root);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return new BinaryTreeEnumerator<K,V>(_root);
+            return new BinaryTreeEnumerator<TK,TV>(_root);
         }
 
-        public bool ContainsKey(K key)
+        public bool ContainsKey(TK key)
         {
-            var node = this.GetNode(key);
+            var node = GetNode(key);
             return node != null;
         }
     }
