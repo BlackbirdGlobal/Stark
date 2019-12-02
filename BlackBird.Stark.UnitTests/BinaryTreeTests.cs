@@ -99,6 +99,7 @@ namespace Blackbird.Stark.UnitTests
             Assert.Null(rightNode.Left);
             Assert.Null(rightNode.Right);
             
+            
         }
     }
 }
