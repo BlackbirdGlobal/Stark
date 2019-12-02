@@ -98,6 +98,7 @@ namespace Blackbird.Stark.UnitTests
             Assert.Equal(tree._root, rightNode.Parent);
             Assert.Null(rightNode.Left);
             Assert.Null(rightNode.Right);
+            
         }
     }
 }
