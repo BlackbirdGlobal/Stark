@@ -261,6 +261,7 @@ namespace Blackbird.Stark.UnitTests
             Assert.False(right.HasChildren);
             Assert.Equal(rightKey, right.Key);
         }
+        
         [Fact]
         public void Add_ThreeNodesTree_RemoveRight()
         {
@@ -287,6 +288,32 @@ namespace Blackbird.Stark.UnitTests
             Assert.Equal(tree._root, left.Parent);
             Assert.False(left.HasChildren);
             Assert.Equal(rightLeftKey, left.Key);
+        }
+
+        [Fact]
+        public void Add_FourNodesTree_RemoveRoot()
+        {
+            //Arrange
+            const int rootKey = 5;
+            const int rightKey = 7;
+            const int leftKey = 3;
+            const int successorKey = 4;
+            const string data = "DummyData";
+            var tree = new BinaryTree<int, string>();
+            tree.Add(rootKey, data);
+            tree.Add(rightKey, data);
+            tree.Add(leftKey, data);
+            tree.Add(successorKey, data);
+            //Act
+            var result = tree.Remove(rootKey);
+            //Assert
+            Assert.True(result);
+            Assert.Equal(3, tree.Count);
+            Assert.Equal(successorKey, tree._root.Key);
+            Assert.Equal(leftKey, tree._root.Left.Key);
+            Assert.Equal(rightKey, tree._root.Right.Key);
+            Assert.Equal(tree._root, tree._root.Left.Parent);
+            Assert.Equal(tree._root, tree._root.Right.Parent);
         }
     }
 }

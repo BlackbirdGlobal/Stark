@@ -79,7 +79,8 @@ namespace Blackbird.Stark.Trees
                     successor.Left = node.Left == successor? null: node.Left;
                     successor.Right = node.Right;
                     successor.Parent = node.Parent;
-                    if(node.HasRightChild) node.Right.Parent = successor;
+                    if(successor.HasRightChild) successor.Right.Parent = successor;
+                    if(successor.HasLeftChild) successor.Left.Parent = successor;
 
                     if (node.Parent != null)
                     {
