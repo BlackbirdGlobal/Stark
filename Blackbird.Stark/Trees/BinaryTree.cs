@@ -72,7 +72,8 @@ namespace Blackbird.Stark.Trees
                 if(node.HasBothChildren)
                 {
                     var successor = FindClosestSmallerValue(node);
-                    successor.Parent.Right = successor.Left;
+                    if(!successor.Parent.IsRoot)
+                        successor.Parent.Right = successor.Left;
                     if(successor.HasLeftChild)
                         successor.Left.Parent = successor.Parent;
                     successor.Left = node.Left == successor? null: node.Left;

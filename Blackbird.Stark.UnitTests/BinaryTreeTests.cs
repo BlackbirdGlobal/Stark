@@ -223,7 +223,7 @@ namespace Blackbird.Stark.UnitTests
             //Assert
             Assert.True(result);
             Assert.Equal(2, tree.Count);
-            Assert.Equal(tree._root.Key, rightLeftKey);
+            Assert.Equal(rightLeftKey, tree._root.Key);
             Assert.False(tree._root.HasLeftChild);
             Assert.True(tree._root.HasRightChild);
             Assert.True(tree._root.IsRoot);
@@ -232,6 +232,61 @@ namespace Blackbird.Stark.UnitTests
             Assert.Equal(rightKey, child.Key);
             Assert.False(child.IsRoot);
             Assert.False(child.HasChildren);
+        }
+
+        [Fact]
+        public void Add_ThreeNodesTree_RemoveLeft()
+        {
+            //Arrange
+            const int rootKey = 2;
+            const int rightKey = 3;
+            const int rightLeftKey = 1;
+            const string data = "DummyData";
+            var tree = new BinaryTree<int, string>();
+            tree.Add(rootKey, data);
+            tree.Add(rightKey, data);
+            tree.Add(rightLeftKey, data);
+            //Act
+            var result = tree.Remove(rightLeftKey);
+            //Assert
+            Assert.True(result);
+            Assert.Equal(2, tree.Count);
+            Assert.Equal(rootKey,tree._root.Key);
+            Assert.True(tree._root.HasRightChild);
+            Assert.False(tree._root.HasLeftChild);
+            Assert.True(tree._root.HasChildren);
+            var right = tree._root.Right;
+            Assert.NotNull(right);
+            Assert.Equal(tree._root, right.Parent);
+            Assert.False(right.HasChildren);
+            Assert.Equal(rightKey, right.Key);
+        }
+        [Fact]
+        public void Add_ThreeNodesTree_RemoveRight()
+        {
+            //Arrange
+            const int rootKey = 2;
+            const int rightKey = 3;
+            const int rightLeftKey = 1;
+            const string data = "DummyData";
+            var tree = new BinaryTree<int, string>();
+            tree.Add(rootKey, data);
+            tree.Add(rightKey, data);
+            tree.Add(rightLeftKey, data);
+            //Act
+            var result = tree.Remove(rightKey);
+            //Assert
+            Assert.True(result);
+            Assert.Equal(2, tree.Count);
+            Assert.Equal(rootKey,tree._root.Key);
+            Assert.True(tree._root.HasLeftChild);
+            Assert.False(tree._root.HasRightChild);
+            Assert.True(tree._root.HasChildren);
+            var left = tree._root.Left;
+            Assert.NotNull(left);
+            Assert.Equal(tree._root, left.Parent);
+            Assert.False(left.HasChildren);
+            Assert.Equal(rightLeftKey, left.Key);
         }
     }
 }
