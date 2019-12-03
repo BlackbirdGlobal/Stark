@@ -67,18 +67,20 @@ namespace Blackbird.Stark.Trees
             var node = GetNode(key);
             if(node == null)
                 return false;
-            if(node.HasChildren){
-                if(node.HasBothChildren){
+            if(node.HasChildren)
+            {
+                if(node.HasBothChildren)
+                {
                     var successor = FindClosestSmallerValue(node);
                     successor.Parent.Right = successor.Left;
                     if(successor.HasLeftChild)
                         successor.Left.Parent = successor.Parent;
-                    successor.Left = node.Left;
+                    successor.Left = node.Left == successor? null: node.Left;
                     successor.Right = node.Right;
                     successor.Parent = node.Parent;
-                    node.Left.Parent = node.Right.Parent = successor;
-                    
-                    if(node.Parent != null)
+                    if(node.HasRightChild) node.Right.Parent = successor;
+
+                    if (node.Parent != null)
                     {
                         node.Parent.Left = node.Parent.Left == node? successor : node.Parent.Left;
                         node.Parent.Right = node.Parent.Right == node? successor : node.Parent.Right;
@@ -88,7 +90,8 @@ namespace Blackbird.Stark.Trees
                 } else {
                     var child = node.Left ?? node.Right;
                     child.Parent = node.Parent;
-                    if(node.Parent != null){
+                    if(node.Parent != null)
+                    {
                         node.Parent.Left = node.Parent.Left == node ? child : node.Parent.Left;
                         node.Parent.Right = node.Parent.Right == node ? child : node.Parent.Right;
                         node.Parent = node.Left = node.Right = null;
