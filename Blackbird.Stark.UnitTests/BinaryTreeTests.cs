@@ -1,5 +1,8 @@
-﻿using Blackbird.Stark.Trees;
+﻿using System;
+using System.Collections.Generic;
+using Blackbird.Stark.Trees;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Blackbird.Stark.UnitTests
 {
@@ -214,10 +217,7 @@ namespace Blackbird.Stark.UnitTests
             const int rightKey = 3;
             const int rightLeftKey = 1;
             const string data = "DummyData";
-            var tree = new BinaryTree<int, string>();
-            tree.Add(rootKey, data);
-            tree.Add(rightKey, data);
-            tree.Add(rightLeftKey, data);
+            var tree = new BinaryTree<int, string> {{rootKey, data}, {rightKey, data}, {rightLeftKey, data}};
             //Act
             var result = tree.Remove(rootKey);
             //Assert
@@ -242,10 +242,7 @@ namespace Blackbird.Stark.UnitTests
             const int rightKey = 3;
             const int rightLeftKey = 1;
             const string data = "DummyData";
-            var tree = new BinaryTree<int, string>();
-            tree.Add(rootKey, data);
-            tree.Add(rightKey, data);
-            tree.Add(rightLeftKey, data);
+            var tree = new BinaryTree<int, string> {{rootKey, data}, {rightKey, data}, {rightLeftKey, data}};
             //Act
             var result = tree.Remove(rightLeftKey);
             //Assert
@@ -270,10 +267,7 @@ namespace Blackbird.Stark.UnitTests
             const int rightKey = 3;
             const int rightLeftKey = 1;
             const string data = "DummyData";
-            var tree = new BinaryTree<int, string>();
-            tree.Add(rootKey, data);
-            tree.Add(rightKey, data);
-            tree.Add(rightLeftKey, data);
+            var tree = new BinaryTree<int, string> {{rootKey, data}, {rightKey, data}, {rightLeftKey, data}};
             //Act
             var result = tree.Remove(rightKey);
             //Assert
@@ -299,11 +293,10 @@ namespace Blackbird.Stark.UnitTests
             const int leftKey = 3;
             const int successorKey = 4;
             const string data = "DummyData";
-            var tree = new BinaryTree<int, string>();
-            tree.Add(rootKey, data);
-            tree.Add(rightKey, data);
-            tree.Add(leftKey, data);
-            tree.Add(successorKey, data);
+            var tree = new BinaryTree<int, string>
+            {
+                {rootKey, data}, {rightKey, data}, {leftKey, data}, {successorKey, data}
+            };
             //Act
             var result = tree.Remove(rootKey);
             //Assert
@@ -326,17 +319,205 @@ namespace Blackbird.Stark.UnitTests
             const int leftKey = 3;
             const int successorKey = 4;
             const string data = "DummyData";
-            var tree = new BinaryTree<int, string>();
-            tree.Add(rootKey, data);
-            tree.Add(rightKey, data);
-            tree.Add(leftKey, data);
-            tree.Add(successorKey, data);
+            var tree = new BinaryTree<int, string>
+            {
+                {rootKey, data}, {rightKey, data}, {leftKey, data}, {successorKey, data}
+            };
             //Act
             while (tree.Count != 0)
                 tree.Remove(tree._root.Key);
             //Assert
             Assert.Equal(0, tree.Count);
             Assert.Null(tree._root);
+        }
+
+        [Fact]
+        public void ContainsKey_PositiveFlow()
+        {
+            //Arrange
+            const int rootKey = 5;
+            const int rightKey = 7;
+            const int leftKey = 3;
+            const int successorKey = 4;
+            const string data = "DummyData";
+            var tree = new BinaryTree<int, string>
+            {
+                {rootKey, data}, {rightKey, data}, {leftKey, data}, {successorKey, data}
+            };
+            //Act
+            var result = tree.ContainsKey(successorKey);
+            //Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void ContainsKey_NegativeFlow()
+        {
+            //Arrange
+            const int rootKey = 5;
+            const int rightKey = 7;
+            const int leftKey = 3;
+            const int successorKey = 4;
+            const string data = "DummyData";
+            var tree = new BinaryTree<int, string>
+            {
+                {rootKey, data}, {rightKey, data}, {leftKey, data}, {successorKey, data}
+            };
+            //Act
+            var result = tree.ContainsKey(666);
+            //Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void ContainsKey_KeyNull_ThrowsException()
+        {
+            //Arrange
+            const int rootKey = 5;
+            const int rightKey = 7;
+            const int leftKey = 3;
+            const int successorKey = 4;
+            const string data = "DummyData";
+            var tree = new BinaryTree<string, string>
+            {
+                {rootKey.ToString(), data},
+                {rightKey.ToString(), data},
+                {leftKey.ToString(), data},
+                {successorKey.ToString(), data}
+            };
+            //Act & Assert
+            Assert.Throws<ArgumentNullException>(()=> tree.ContainsKey(null));
+        }
+
+        [Fact]
+        public void ContainsKey_PassEmptyString_NegativeFlow()
+        {
+            //Arrange
+            const int rootKey = 5;
+            const int rightKey = 7;
+            const int leftKey = 3;
+            const int successorKey = 4;
+            const string data = "DummyData";
+            var tree = new BinaryTree<string, string>
+            {
+                {rootKey.ToString(), data},
+                {rightKey.ToString(), data},
+                {leftKey.ToString(), data},
+                {successorKey.ToString(), data}
+            };
+            //Act
+            var result = tree.ContainsKey(string.Empty);
+            //Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void Remove_KeyNull_ThrowsException()
+        {
+            //Arrange
+            const int rootKey = 5;
+            const string data = "DummyData";
+            var tree = new BinaryTree<string, string>
+            {
+                {rootKey.ToString(), data}
+            };
+            //Act & Assert
+            Assert.Throws<ArgumentNullException>(() => tree.Remove(null));
+        }
+
+        [Fact]
+        public void Add_KeyNull_ThrowsException()
+        {
+            //Arrange
+            const string data = "DummyData";
+            var tree = new BinaryTree<string, string>();
+            //Act & Assert
+            Assert.Throws<ArgumentNullException>(() => tree.Add(null, data));
+        }
+
+        [Fact]
+        public void Get_KeyNull_ThrowsException()
+        {
+            //Arrange
+            var tree = new BinaryTree<string, string>();
+            //Act & Assert
+            Assert.Throws<ArgumentNullException>(() => tree.Get(null));
+        }
+
+        [Fact]
+        public void Get_PositiveFlow()
+        {
+            //Arrange
+            const int rootKey = 5;
+            const int rightKey = 7;
+            const int leftKey = 3;
+            const int successorKey = 4;
+            const string data = "DummyData";
+            const string expectedData = "Expected success";
+            var tree = new BinaryTree<int, string>
+            {
+                {rootKey, data}, {rightKey, data}, {leftKey, data}, {successorKey, expectedData}
+            };
+            //Act
+            var result = tree.Get(successorKey);
+            //Assert
+            Assert.Equal(expectedData, result);
+        }
+
+        [Fact]
+        public void Get_NoSuchKey_ReturnsDefaulValue()
+        {
+            //Arrange
+            const int rootKey = 5;
+            const int rightKey = 7;
+            const int leftKey = 3;
+            const int successorKey = 4;
+            const string data = "DummyData";
+            var tree = new BinaryTree<int, string>
+            {
+                {rootKey, data}, {rightKey, data}, {leftKey, data}, {successorKey, data}
+            };
+            //Act
+            var result = tree.Get(successorKey+100);
+            //Assert
+            Assert.Equal(default(string), result);
+        }
+
+        [Fact]
+        public void Add_EmptyStringAsKey_AddsAndGetsValue()
+        {
+            //Arrange
+            var tree = new BinaryTree<string, string>();
+            string data = "ExpectedValue";
+            //Act
+            tree.Add(string.Empty, data);
+            var result = tree.Get(string.Empty);
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal(data, result);
+            Assert.Equal(1, tree.Count);
+        }
+
+        [Fact]
+        public void Enumeration()
+        {
+            //Arrange
+            var keys = new List<int>{1, 2, 3, 4, 5, 6, 7};
+            const string dataPrefix = "value";
+            var tree = new BinaryTree<int, string>();
+            foreach (var k in keys)
+            {
+                tree.Add(k, $"{dataPrefix}{k}");
+            }
+            //Act
+            foreach (var pair in tree)
+            {
+                keys.Remove(pair.Key);
+                Assert.Equal($"{dataPrefix}{pair.Key}", pair.Value);
+            }
+            //Assert
+            Assert.Equal(7, tree.Count);
+            Assert.Empty(keys);
         }
     }
 }

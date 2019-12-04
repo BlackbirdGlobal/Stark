@@ -6,29 +6,35 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Blackbird.Stark.UnitTests")]
 namespace Blackbird.Stark.Trees
 {
-    public class BinaryTree<TK,TV>: ITree<TK,TV>, IEnumerable<KeyValuePair<TK,TV>> where TK:IComparable<TK>
+    public sealed class BinaryTree<TK,TV>: ITree<TK,TV>, IEnumerable<KeyValuePair<TK,TV>> where TK:IComparable<TK>
     {
         internal BinaryNode<TK, TV> _root;
+        private readonly object _lock = new object();
         
         public void Add(TK key, TV value)
         {
-            var node = new BinaryNode<TK, TV> {Key = key, Value = value};
-            Count++;
-            if (_root == null)
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+            lock (_lock)
             {
-                _root = node;
-                return;
-            }
+                var node = new BinaryNode<TK, TV> {Key = key, Value = value};
+                Count++;
+                if (_root == null)
+                {
+                    _root = node;
+                    return;
+                }
 
-            var parent = FindParentToInsert(node.Key);
-            node.Parent = parent;
-            if (node.Key.CompareTo(parent.Key) == -1)
-            {
-                parent.Left = node;
-            }
-            else
-            {
-                parent.Right = node;
+                var parent = FindParentToInsert(node.Key);
+                node.Parent = parent;
+                if (node.Key.CompareTo(parent.Key) == -1)
+                {
+                    parent.Left = node;
+                }
+                else
+                {
+                    parent.Right = node;
+                }
             }
         }
 
@@ -40,6 +46,9 @@ namespace Blackbird.Stark.Trees
 
         private BinaryNode<TK, TV> GetNode(TK key)
         {
+            if (key == null)
+                throw new ArgumentNullException();
+
             if (_root == null)
                 return null;
 
@@ -57,6 +66,8 @@ namespace Blackbird.Stark.Trees
                         break;
                     case int cmp when cmp == 0:
                         return result;
+                    default:
+                        return null;
                 }
             }
             return null;
@@ -64,60 +75,80 @@ namespace Blackbird.Stark.Trees
 
         public bool Remove(TK key)
         {
-            var node = GetNode(key);
-            if(node == null)
-                return false;
-            if(node.HasChildren)
+            if(key == null)
+                throw new ArgumentNullException(nameof(key));
+            lock (_lock)
             {
-                if(node.HasBothChildren)
+                var node = GetNode(key);
+                if (node == null)
+                    return false;
+                if (node.HasChildren)
                 {
-                    var successor = FindClosestSmallerValue(node);
-                    if(!successor.Parent.IsRoot)
-                        successor.Parent.Right = successor.Left;
-                    if(successor.HasLeftChild)
-                        successor.Left.Parent = successor.Parent;
-                    successor.Left = node.Left == successor? null: node.Left;
-                    successor.Right = node.Right;
-                    successor.Parent = node.Parent;
-                    if(successor.HasRightChild) successor.Right.Parent = successor;
-                    if(successor.HasLeftChild) successor.Left.Parent = successor;
+                    if (node.HasBothChildren)
+                    {
+                        var successor = FindClosestSmallerValue(node);
+                        if (!successor.Parent.IsRoot)
+                            successor.Parent.Right = successor.Left;
+                        if (successor.HasLeftChild)
+                            successor.Left.Parent = successor.Parent;
+                        successor.Left = node.Left == successor ? null : node.Left;
+                        successor.Right = node.Right;
+                        successor.Parent = node.Parent;
+                        if (successor.HasRightChild) successor.Right.Parent = successor;
+                        if (successor.HasLeftChild) successor.Left.Parent = successor;
 
+                        if (node.Parent != null)
+                        {
+                            node.Parent.Left = node.Parent.Left == node ? successor : node.Parent.Left;
+                            node.Parent.Right = node.Parent.Right == node ? successor : node.Parent.Right;
+                        }
+                        else
+                        {
+                            _root = successor;
+                        }
+                    }
+                    else
+                    {
+                        var child = node.Left ?? node.Right;
+                        child.Parent = node.Parent;
+                        if (node.Parent != null)
+                        {
+                            node.Parent.Left = node.Parent.Left == node ? child : node.Parent.Left;
+                            node.Parent.Right = node.Parent.Right == node ? child : node.Parent.Right;
+                            node.Parent = node.Left = node.Right = null;
+                        }
+                        else
+                        {
+                            node.Left = node.Right = null;
+                            _root = child;
+                        }
+                    }
+                }
+                else
+                {
                     if (node.Parent != null)
                     {
-                        node.Parent.Left = node.Parent.Left == node? successor : node.Parent.Left;
-                        node.Parent.Right = node.Parent.Right == node? successor : node.Parent.Right;
-                    } else {
-                        _root = successor;
+                        node.Parent.Left = node.Parent.Left == node ? null : node.Parent.Left;
+                        node.Parent.Right = node.Parent.Right == node ? null : node.Parent.Right;
+                        node.Parent = null;
                     }
-                } else {
-                    var child = node.Left ?? node.Right;
-                    child.Parent = node.Parent;
-                    if(node.Parent != null)
+                    else
                     {
-                        node.Parent.Left = node.Parent.Left == node ? child : node.Parent.Left;
-                        node.Parent.Right = node.Parent.Right == node ? child : node.Parent.Right;
-                        node.Parent = node.Left = node.Right = null;
-                    } else {
-                        node.Left = node.Right = null;
-                        _root = child;
+                        _root = null;
                     }
                 }
-            } else {
-                if(node.Parent != null){
-                    node.Parent.Left = node.Parent.Left == node ? null : node.Parent.Left;
-                    node.Parent.Right = node.Parent.Right == node ? null : node.Parent.Right;
-                    node.Parent = null;
-                } else {
-                    _root = null;
-                }
+
+                Count--;
+                return true;
             }
-            Count--;
-            return true;
         }
 
         public void Clear()
         {
-            _root = null;
+            lock (_lock)
+            {
+                _root = null;
+            }
         }
 
         public int Count { get; private set; } = 0;
@@ -165,8 +196,7 @@ namespace Blackbird.Stark.Trees
 
         public bool ContainsKey(TK key)
         {
-            var node = GetNode(key);
-            return node != null;
+            return GetNode(key) != null;
         }
     }
 }
