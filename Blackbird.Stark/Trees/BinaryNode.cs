@@ -2,14 +2,14 @@ using System;
 
 namespace Blackbird.Stark.Trees
 {
-    internal class BinaryNode<K,V> where K:IComparable<K>
+    internal class BinaryNode<TK,TV> where TK:IComparable<TK>
     {
-        public K Key { get; set; }
-        public V Value { get; set; }
+        public TK Key { get; set; }
+        public TV Value { get; set; }
         
-        public BinaryNode<K,V> Parent { get; set; }
-        public BinaryNode<K,V> Left { get; set; }
-        public BinaryNode<K,V> Right { get; set; }
+        public BinaryNode<TK,TV> Parent { get; set; }
+        public BinaryNode<TK,TV> Left { get; set; }
+        public BinaryNode<TK,TV> Right { get; set; }
 
         public bool IsRoot => Parent == null;
         public bool HasLeftChild => Left != null;
