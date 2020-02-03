@@ -5,7 +5,7 @@ namespace Blackbird.Stark.Trees
     internal class AvlNode<TK,TV>: BinaryNode<TK,TV> where TK:IComparable<TK>
     {
         private int _height;
-        public int Height => GetHeight();
+        public int Height => _height;
         public int Balance => LeftHeight - RightHeight;
         private int LeftHeight => Left?._height ?? 0;
         private int RightHeight => Right?._height ?? 0;
@@ -28,7 +28,7 @@ namespace Blackbird.Stark.Trees
             set => base.Parent = value;
         }
 
-        private int GetHeight()
+        public int RefreshHeight()
         {
             _height = 1 + Math.Max(LeftHeight, RightHeight);
             return _height;

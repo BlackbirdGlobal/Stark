@@ -30,40 +30,95 @@ namespace Blackbird.Stark.Trees
                     parent.Right = node;
                 }
                 Count++;
+                var balance = parent.Balance;
+
+                switch (balance)
+                {
+                    case int b when b > 1 && node.Key.CompareTo(parent.Left.Key) == -1:
+                        RightRotate(parent);
+                        break;
+                    case int b when b > 1 && node.Key.CompareTo(parent.Left.Key) == 1:
+                        parent.Left = LeftRotate(parent.Left);
+                        RightRotate(parent);
+                        break;
+                    case int b when b < -1 && node.Key.CompareTo(parent.Right.Key) == 1:
+                        LeftRotate(parent);
+                        break;
+                    case int b when b < -1 && node.Key.CompareTo(parent.Right.Key) == -1:
+                        parent.Right = RightRotate(parent.Right);
+                        LeftRotate(parent);
+                        break;
+                    case int b when b < -1 && node.Key.CompareTo(node.Right.Key) == 1:
+                        LeftRotate(parent);
+                        break;
+                }
             }
+        }
 
-            var balance = node.Balance;
+        private AvlNode<TK, TV> LeftRotate(AvlNode<TK, TV> x)
+        {
+            var y = x.Right;  
+            var t2 = y.Left;
 
-            switch (balance)
+            if (x.IsRoot)
+                _root = y;
+            else
             {
-                case int b when b > 1 && node.Key.CompareTo(node.Left.Key) == -1:
-                    RightRotate(node);
-                    break;
-                case int b when b > 1 && node.Key.CompareTo(node.Left.Key) == 1:
-                    node.Left = LeftRotate(node.Left);
-                    RightRotate(node);
-                    break;
-                case int b when b < -1 && node.Key.CompareTo(node.Right.Key) == 1:
-                    LeftRotate(node);
-                    break;
-                case int b when b < -1 && node.Key.CompareTo(node.Right.Key) == -1:
-                    node.Right = RightRotate(node.Right);
-                    LeftRotate(node);
-                    break;
-                case int b when b < -1 && node.Key.CompareTo(node.Right.Key) == 1:
-                    LeftRotate(node);
-                    break;
+                if (x.Parent.Left == x)
+                    x.Parent.Left = y;
+                else
+                    x.Parent.Right = y;
             }
+            // Perform rotation  
+            y.Left = x;
+            y.Parent = x.Parent;
+            
+            x.Parent = y;
+            x.Right = t2;
+            t2.Parent = x;
+            
+            // Update heights  
+            x.RefreshHeight();
+            y.RefreshHeight();
+  
+            // Return new root  
+            return y;
         }
 
-        private AvlNode<TK, TV> LeftRotate(BinaryNode<TK, TV> nodeLeft)
+        private AvlNode<TK,TV> RightRotate(AvlNode<TK, TV> y)
         {
-            throw new NotImplementedException();
-        }
+            var x = y.Left;  
+            var t2 = x.Right;
 
-        private AvlNode<TK,TV> RightRotate(AvlNode<TK, TV> node)
-        {
-            throw new NotImplementedException();
+            if (y.IsRoot)
+            {
+                _root = x;
+            }
+            else
+            {
+                if (y.Parent.Left == y)
+                {
+                    y.Parent.Left = x;
+                }
+                else
+                {
+                    y.Parent.Right = x;
+                }
+            }
+            // Perform rotation  
+            x.Right = y;
+            x.Parent = y.Parent;
+
+            y.Parent = x;
+            y.Left = t2;
+            t2.Parent = y;
+  
+            // Update heights  
+            y.RefreshHeight();  
+            x.RefreshHeight();  
+  
+            // Return new root  
+            return x; 
         }
 
         private AvlNode<TK, TV> FindParentToInsert(TK key)
