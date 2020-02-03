@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Blackbird.Stark.Trees
 {
@@ -145,7 +146,22 @@ namespace Blackbird.Stark.Trees
 
         public TV Get(TK key)
         {
-            throw new NotImplementedException();
+            var it = _root;
+            while (it != null)
+            {
+                switch (it.Key.CompareTo(key))
+                {
+                    case 0:
+                        return it.Value;
+                    case 1:
+                        it = it.Left;
+                        break;
+                    case -1:
+                        it = it.Right;
+                        break;
+                }
+            }
+            return default;
         }
 
         public bool Remove(TK key)
@@ -162,7 +178,23 @@ namespace Blackbird.Stark.Trees
 
         public bool ContainsKey(TK key)
         {
-            throw new NotImplementedException();
+            var it = _root;
+            while (it != null)
+            {
+                switch (it.Key.CompareTo(key))
+                {
+                    case 0:
+                        return true;
+                    case 1:
+                        it = it.Left;
+                        break;
+                    case -1:
+                        it = it.Right;
+                        break;
+                }
+            }
+
+            return false;
         }
     }
 }
