@@ -4,18 +4,18 @@ using System.Linq;
 
 namespace Blackbird.Stark.Graphs.BFS
 {
-    class BfsSearcher<T, D> : IGraphSearcher<T, D> where T : IEquatable<T>
+    public class BfsSearcher<T, TD> : IGraphSearcher<T, TD> where T : IEquatable<T>
     {
-        public GraphNode<T, D> Graph { get; set; }
-        private Queue<GraphNode<T, D>> Q { get; set; }
+        public GraphNode<T, TD> Graph { get; set; }
+        private Queue<GraphNode<T, TD>> Q { get; set; }
 
-        public BfsSearcher(GraphNode<T, D> root)
+        public BfsSearcher(GraphNode<T, TD> root)
         {
             Graph = root;
-            Q = new Queue<GraphNode<T, D>>();
+            Q = new Queue<GraphNode<T, TD>>();
         }
 
-        public SearchResult<T, D> Search(T val, Action<GraphNode<T, D>, T> f)
+        public SearchResult<T, TD> Search(T val, Action<GraphNode<T, TD>, T> f)
         {
             if (Q.Count == 0)
             {
@@ -28,24 +28,24 @@ namespace Blackbird.Stark.Graphs.BFS
                 f(node, val);
                 if (node.Value.Equals(val))
                 {
-                    return new SearchResult<T, D>() { Found = true, Result = node };
+                    return new SearchResult<T, TD>() { Found = true, Result = node };
                 }
-                if (node.Children == null || node.Children.All(x => x.Status == DiscoveryStatus.Vizited))
+                if (node.Children == null || node.Children.All(x => x.Status == DiscoveryStatus.Visited))
                 {
-                    node.Status = DiscoveryStatus.Vizited;
+                    node.Status = DiscoveryStatus.Visited;
                 }
                 else
                 {
                     foreach (var c in node.Children)
                     {
-                        if (c.Status != DiscoveryStatus.Vizited)
+                        if (c.Status != DiscoveryStatus.Visited)
                         {
                             Q.Enqueue(c);
                         }
                     }
                 }
             }
-            return new SearchResult<T, D>() { Found = false };
+            return new SearchResult<T, TD>() { Found = false };
         }
     }
 }
