@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		nuget.config = nuget.config
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackbird.Stark.Runner", "Blackbird.Stark.App\Blackbird.Stark.Runner.csproj", "{F7E5B3A8-D482-4A25-A102-8EDEB6BF8C34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackbird.Stark.Runner", "Blackbird.Stark.Runner\Blackbird.Stark.Runner.csproj", "{F7E5B3A8-D482-4A25-A102-8EDEB6BF8C34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blackbird.Stark", "Blackbird.Stark\Blackbird.Stark.csproj", "{440C295B-A0D0-4CC9-8218-52A2536F0955}"
 EndProject
