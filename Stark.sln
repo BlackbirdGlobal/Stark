@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackbird.Stark.UnitTests", "Blackbird.Stark.UnitTests\Blackbird.Stark.UnitTests.csproj", "{3FAF56DA-1F7F-415C-AAE0-E994C0C0EA51}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE7F8B1B-665C-484B-ABED-415205D9BB3D}"
-	ProjectSection(SolutionItems) = preProject
-		nuget.config = nuget.config
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackbird.Stark.Runner", "Blackbird.Stark.Runner\Blackbird.Stark.Runner.csproj", "{F7E5B3A8-D482-4A25-A102-8EDEB6BF8C34}"
 EndProject
