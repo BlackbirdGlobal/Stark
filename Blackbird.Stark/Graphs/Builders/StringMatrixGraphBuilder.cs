@@ -73,7 +73,7 @@ namespace Blackbird.Stark.Graphs.Builders
             throw new KeyNotFoundException();
         }
 
-        private class Entry<T, D> where T : IEquatable<T>
+        private class Entry<T, TD> where T : IEquatable<T>
         {
             public int I { get; set; }
 
@@ -81,7 +81,7 @@ namespace Blackbird.Stark.Graphs.Builders
 
             public char Value { get; set; }
 
-            public GraphNode<T, D> Parent { get; set; }
+            public GraphNode<T, TD> Parent { get; set; }
         }
     }
 }

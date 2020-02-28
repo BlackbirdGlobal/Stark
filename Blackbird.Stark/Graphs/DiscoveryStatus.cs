@@ -4,6 +4,6 @@
     {
         Undiscovered,
         Discovered,
-        Vizited
+        Visited
     }
 }
