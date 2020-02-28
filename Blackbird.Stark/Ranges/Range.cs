@@ -22,8 +22,8 @@ namespace Blackbird.Stark.Ranges
         {
             var r = new Range
             {
-                L = Math.Min(L, overlapping.L),
-                R = Math.Max(R, overlapping.R)
+                L = System.Math.Min(L, overlapping.L),
+                R = System.Math.Max(R, overlapping.R)
             };
             return r;
         }

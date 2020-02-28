@@ -30,7 +30,7 @@ namespace Blackbird.Stark.Trees
 
         public int RefreshHeight()
         {
-            _height = 1 + Math.Max(LeftHeight, RightHeight);
+            _height = 1 + System.Math.Max(LeftHeight, RightHeight);
             return _height;
         }
 
