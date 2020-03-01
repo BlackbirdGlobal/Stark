@@ -12,11 +12,11 @@ namespace Blackbird.Stark.App
     {
         static void Main(string[] args)
         {
-            var a = new BigRational(1);
+            var a = BigRational.Parse("20202020456,12548");
             //var b = new BigRational(1);
             var b = BigRational.Parse("-10000.00000012300056700000111144456666777778901110202034");
             
-            Console.WriteLine(a + b);
+            Console.WriteLine(a * b);
         }
     }
 }

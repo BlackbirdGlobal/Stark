@@ -12,6 +12,7 @@ namespace Blackbird.Stark.UnitTests
         [InlineData("123",true)]
         [InlineData("-123.-777",false)]
         [InlineData("-123.1e777",false)]
+        [InlineData("123000123,777000777", true)]
         public void IsNumber_Tests(string input, bool expected)
         {
             //Act

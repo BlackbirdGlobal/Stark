@@ -161,6 +161,26 @@ namespace Blackbird.Stark.Math
             return new BigRational((r1._numerator * r2._denominator) + (r1._denominator * r2._numerator), (r1._denominator * r2._denominator));
         }
         
+        public static BigRational operator - (BigRational r1, BigRational r2) {
+            // a/b - c/d  == (ad - bc)/bd
+            return new BigRational((r1._numerator * r2._denominator) - (r1._denominator * r2._numerator), (r1._denominator * r2._denominator));
+        }
+
+        public static BigRational operator * (BigRational r1, BigRational r2) {
+            // a/b * c/d  == (ac)/(bd)
+            return new BigRational((r1._numerator * r2._numerator), (r1._denominator * r2._denominator));
+        }
+
+        public static BigRational operator / (BigRational r1, BigRational r2) {
+            // a/b / c/d  == (ad)/(bc)
+            return new BigRational((r1._numerator * r2._denominator), (r1._denominator * r2._numerator));
+        }
+
+        public static BigRational operator % (BigRational r1, BigRational r2) {
+            // a/b % c/d  == (ad % bc)/bd
+            return new BigRational((r1._numerator * r2._denominator) % (r1._denominator * r2._numerator), (r1._denominator * r2._denominator));
+        }
+        
         #endregion
     }
 }
