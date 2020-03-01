@@ -14,7 +14,8 @@ namespace Blackbird.Stark.App
         {
             var a = new BigRational(1);
             //var b = new BigRational(1);
-            var b = BigRational.Parse("-10000.0000001");
+            var b = BigRational.Parse("-10000.00000012300056700000111144456666777778901110202034");
+            
             Console.WriteLine(a + b);
         }
     }

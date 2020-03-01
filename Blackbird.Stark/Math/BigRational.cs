@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.Numerics;
+using System.Text;
 using Blackbird.Stark.Extensions;
 
 namespace Blackbird.Stark.Math
@@ -131,6 +133,25 @@ namespace Blackbird.Stark.Math
             }
         }
         
+        public override string ToString()
+        {
+            var whole = BigInteger.Divide(_numerator, _denominator).ToString("R", CultureInfo.InvariantCulture);
+            string fraction = default;
+            var r = BigInteger.Remainder(_numerator, _denominator);
+            r = r < 0 ? -r : r;
+            var tmp = r;
+            while (r > 0)
+            {
+                tmp *= 10;
+                r = BigInteger.Remainder(tmp, _denominator);
+                var w = BigInteger.Divide(tmp, _denominator);
+                if (w > 0)
+                    tmp = r;
+                fraction +=  w.ToString("R", CultureInfo.InvariantCulture);
+            }
+
+            return $"{whole}.{fraction}";
+        }
         #endregion
 
         #region Operators
