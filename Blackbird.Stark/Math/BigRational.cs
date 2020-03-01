@@ -6,14 +6,19 @@ namespace Blackbird.Stark.Math
 {
     public struct BigRational: IEquatable<BigRational>
     {
+        #region Instance fields
         private BigInteger _numerator;
         private BigInteger _denominator;
         public int Sign => _numerator.Sign;
+        #endregion
         
+        #region Static Properties
         public static BigRational Zero { get; } = new BigRational(BigInteger.Zero);
         public static BigRational One { get; } = new BigRational(BigInteger.One);
         public static BigRational MinusOne { get; } = new BigRational(BigInteger.MinusOne);
+        #endregion
         
+        #region Constructors
         public BigRational(BigInteger val)
         {
             _numerator = val;
@@ -40,7 +45,9 @@ namespace Blackbird.Stark.Math
             }
             this = Reduce(this); 
         }
+        #endregion
 
+        #region Static Methods
         public static BigRational Parse(string val)
         {
             if(!val.IsNumber())
@@ -82,21 +89,7 @@ namespace Blackbird.Stark.Math
                 return false;
             }
         }
-        public bool Equals(BigRational other)
-        {
-            if (this._denominator == other._denominator) {
-                return _numerator == other._numerator;
-            }
-            else {
-                return (_numerator * other._denominator) == (_denominator * other._numerator);
-            }
-        }
         
-        public static BigRational operator + (BigRational r1, BigRational r2) {
-            // a/b + c/d  == (ad + bc)/bd
-            return new BigRational((r1._numerator * r2._denominator) + (r1._denominator * r2._numerator), (r1._denominator * r2._denominator));
-        }
-
         private static BigRational Reduce(BigRational val)
         {
             var reduced = new BigRational {_denominator = val._denominator, _numerator = val._numerator};
@@ -116,5 +109,25 @@ namespace Blackbird.Stark.Math
 
             return reduced;
         }
+        #endregion
+
+        #region Instance Methods
+        public bool Equals(BigRational other)
+        {
+            if (this._denominator == other._denominator) {
+                return _numerator == other._numerator;
+            }
+            else {
+                return (_numerator * other._denominator) == (_denominator * other._numerator);
+            }
+        }
+        #endregion
+
+        #region Operators
+        public static BigRational operator + (BigRational r1, BigRational r2) {
+            // a/b + c/d  == (ad + bc)/bd
+            return new BigRational((r1._numerator * r2._denominator) + (r1._denominator * r2._numerator), (r1._denominator * r2._denominator));
+        }
+        #endregion
     }
 }
