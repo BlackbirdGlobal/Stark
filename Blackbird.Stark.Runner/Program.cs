@@ -13,7 +13,8 @@ namespace Blackbird.Stark.App
         static void Main(string[] args)
         {
             var a = new BigRational(1);
-            var b = new BigRational(1);
+            //var b = new BigRational(1);
+            var b = BigRational.Parse("-10000.0000001");
             Console.WriteLine(a.Equals(b));
         }
     }

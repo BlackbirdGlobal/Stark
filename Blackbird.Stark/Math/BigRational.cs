@@ -8,6 +8,7 @@ namespace Blackbird.Stark.Math
     {
         private BigInteger _numerator;
         private BigInteger _denominator;
+        public int Sign => _numerator.Sign;
         
         public static BigRational Zero { get; } = new BigRational(BigInteger.Zero);
         public static BigRational One { get; } = new BigRational(BigInteger.One);
@@ -40,7 +41,7 @@ namespace Blackbird.Stark.Math
             this = Reduce(this); 
         }
 
-        public BigRational(string val)
+        public static BigRational Parse(string val)
         {
             if(!val.IsNumber())
                 throw new ArgumentException($"Value is not a number: {val}");
@@ -49,20 +50,38 @@ namespace Blackbird.Stark.Math
             if (delimiterIndex == -1)
                 delimiterIndex = val.IndexOf(',');
 
+            var result = new BigRational();
+            
             if (delimiterIndex == -1)
             {
-                _numerator = BigInteger.Parse(val);
-                _denominator = BigInteger.One;
+                result._numerator = BigInteger.Parse(val);
+                result._denominator = BigInteger.One;
             }
             else
             {
                 //TODO: get count of signs after delimiter
                 //TODO: xxx.zzz = xxxzzz/1000 
-                this = Reduce(this);   
+                var numbersAfterDelimiter = val.Length - delimiterIndex -1;
+                result._denominator = BigInteger.Pow(10, numbersAfterDelimiter);
+                result._numerator = BigInteger.Parse(val.Remove(delimiterIndex, 1));
+                result = Reduce(result);   
+            }
+
+            return result;
+        }
+
+        public static bool TryParse(string val, out BigRational res)
+        {
+            try
+            {
+                res = BigRational.Parse(val);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
-        
-        public int Sign => _numerator.Sign;
         public bool Equals(BigRational other)
         {
             if (this._denominator == other._denominator) {
@@ -80,7 +99,8 @@ namespace Blackbird.Stark.Math
 
         private static BigRational Reduce(BigRational val)
         {
-            var reduced = new BigRational(val._numerator, val._denominator);
+            var reduced = new BigRational {_denominator = val._denominator, _numerator = val._numerator};
+
             if (val._numerator == BigInteger.Zero)
             {
                 reduced._denominator = BigInteger.One;
