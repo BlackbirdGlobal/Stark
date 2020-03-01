@@ -21,7 +21,7 @@ namespace Blackbird.Stark.Extensions
             {
                 if (i == 0 && trimmed[i] == '-')
                     continue;
-                if (trimmed[i] == '.' || trimmed[i] == ',')
+                if (!hasDelimiter && (trimmed[i] == '.' || trimmed[i] == ','))
                 {
                     hasDelimiter = true;
                     continue;
