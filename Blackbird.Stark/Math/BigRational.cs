@@ -13,6 +13,12 @@ namespace Blackbird.Stark.Math
         private BigInteger _numerator;
         private BigInteger _denominator;
         public int Sign => _numerator.Sign;
+
+        /// <summary>
+        /// Gets or sets how much numbers after delimiter will be returned by ToString().
+        /// Default value is 512;
+        /// </summary>
+        public int Precision { get; set; }
         
         #endregion
         
@@ -30,10 +36,12 @@ namespace Blackbird.Stark.Math
         {
             _numerator = val;
             _denominator = BigInteger.One;
+            Precision = 512;
         }
         
         public BigRational(BigInteger numerator, BigInteger denominator)
         {
+            Precision = 512;
             if (denominator.Sign == 0) {
                 throw new DivideByZeroException();
             }
@@ -54,6 +62,29 @@ namespace Blackbird.Stark.Math
             this = Reduce(this); 
         }
         
+        internal BigRational(SerializationInfo info, StreamingContext context) {
+            if (info == null) {
+                throw new ArgumentNullException(nameof(info));
+            }
+
+            _numerator   = (BigInteger)info.GetValue("Numerator", typeof(BigInteger));
+            _denominator = (BigInteger)info.GetValue("Denominator", typeof(BigInteger));
+            Precision = (int)info.GetValue("Precision", typeof(int));
+        }
+
+        private BigRational(decimal value)
+        {
+            //only 29 digits max according to MSDN
+            var str = value.ToString("F29");
+            this = Parse(str);
+        }
+
+        private BigRational(double value)
+        {
+            //only 17 digits max according to MSDN
+            this = Parse(value.ToString("F17"));
+        }
+
         #endregion
 
         #region Static Methods
@@ -96,6 +127,7 @@ namespace Blackbird.Stark.Math
             }
             catch
             {
+                res = default;
                 return false;
             }
         }
@@ -226,7 +258,8 @@ namespace Blackbird.Stark.Math
             var r = BigInteger.Remainder(_numerator, _denominator);
             r = r < 0 ? -r : r;
             var tmp = r;
-            while (r > 0)
+            var i = 0;
+            while (r > 0 && i < Precision)
             {
                 tmp *= 10;
                 r = BigInteger.Remainder(tmp, _denominator);
@@ -234,6 +267,7 @@ namespace Blackbird.Stark.Math
                 if (w > 0)
                     tmp = r;
                 fraction +=  w.ToString("R", CultureInfo.InvariantCulture);
+                i++;
             }
 
             return $"{whole}.{fraction}";
@@ -269,6 +303,7 @@ namespace Blackbird.Stark.Math
 
             info.AddValue("Numerator", _numerator);
             info.AddValue("Denominator", _denominator);
+            info.AddValue("Precision", Precision);
         }
 
         public int CompareTo(object obj)
@@ -347,6 +382,58 @@ namespace Blackbird.Stark.Math
 
         public static BigRational operator -- (BigRational r) {
             return r - One;
+        }
+        
+        #endregion
+        
+        #region Implicit Casts
+        
+        public static implicit operator BigRational(SByte value) {           
+            return new BigRational((BigInteger)value);
+        }
+        
+        public static implicit operator BigRational(UInt16 value) {           
+            return new BigRational((BigInteger)value);
+        }
+        
+        public static implicit operator BigRational(UInt32 value) {           
+            return new BigRational((BigInteger)value);
+        }
+        
+        public static implicit operator BigRational(UInt64 value) {           
+            return new BigRational((BigInteger)value);
+        }
+
+        public static implicit operator BigRational(Byte value) {           
+            return new BigRational((BigInteger)value);
+        }
+
+        public static implicit operator BigRational(Int16 value) {           
+            return new BigRational((BigInteger)value);
+        }
+
+        public static implicit operator BigRational(Int32 value) {           
+            return new BigRational((BigInteger)value);
+        }
+
+        public static implicit operator BigRational(Int64 value) {           
+            return new BigRational((BigInteger)value);
+        }
+
+        public static implicit operator BigRational(BigInteger value) {           
+            return new BigRational(value);
+        }
+
+        public static implicit operator BigRational(Single value) { 
+            return new BigRational((Double)value);
+        }
+
+        public static implicit operator BigRational(Double value) {      
+            return new BigRational(value);
+        }
+
+        public static implicit operator BigRational(Decimal value) {      
+            return new BigRational(value);
         }
         
         #endregion
