@@ -1,12 +1,13 @@
 using System;
 using System.Globalization;
 using System.Numerics;
+using System.Runtime.Serialization;
 using System.Text;
 using Blackbird.Stark.Extensions;
 
 namespace Blackbird.Stark.Math
 {
-    public struct BigRational: IEquatable<BigRational>
+    public struct BigRational: IEquatable<BigRational>, IComparable, IComparable<BigRational>, ISerializable, IDeserializationCallback
     {
         #region Instance Fields
         
@@ -99,6 +100,84 @@ namespace Blackbird.Stark.Math
             }
         }
         
+        public static BigRational Abs(BigRational r) {
+            return (r._numerator.Sign < 0 ? new BigRational(BigInteger.Abs(r._numerator), r._denominator) : r);
+        }
+        
+        public static BigRational Negate(BigRational r) {
+            return new BigRational(BigInteger.Negate(r._numerator), r._denominator);
+        }
+
+        public static BigRational Invert(BigRational r) {
+            return new BigRational(r._denominator, r._numerator);
+        }
+
+        public static BigRational Add(BigRational x, BigRational y) {
+            return x + y;
+        }
+
+        public static BigRational Subtract(BigRational x, BigRational y) {
+            return x - y;
+        }
+
+
+        public static BigRational Multiply(BigRational x, BigRational y) {
+            return x * y;
+        }
+
+        public static BigRational Divide(BigRational dividend, BigRational divisor) {
+            return dividend / divisor;
+        }
+
+        public static BigRational Remainder(BigRational dividend, BigRational divisor) {
+            return dividend % divisor;
+        }
+        
+        public static BigRational Pow(BigRational baseValue, BigInteger exponent) {
+            if (exponent.Sign == 0) {
+                // 0^0 -> 1
+                // n^0 -> 1
+                return BigRational.One;
+            }
+            else if (exponent.Sign < 0) {
+                if (baseValue == BigRational.Zero) {
+                    throw new ArgumentException("cannot raise zero to a negative power", "baseValue");
+                }
+                // n^(-e) -> (1/n)^e
+                baseValue = BigRational.Invert(baseValue);
+                exponent  = BigInteger.Negate(exponent);
+            }
+
+            BigRational result = baseValue;
+            while (exponent > BigInteger.One) {
+                result = result * baseValue;
+                exponent--;
+            }
+
+            return result;
+        }
+
+        // Least Common Denominator (LCD)
+        //
+        // The LCD is the least common multiple of the two denominators.  For instance, the LCD of
+        // {1/2, 1/4} is 4 because the least common multiple of 2 and 4 is 4.  Likewise, the LCD
+        // of {1/2, 1/3} is 6.
+        //       
+        // To find the LCD:
+        //
+        // 1) Find the Greatest Common Divisor (GCD) of the denominators
+        // 2) Multiply the denominators together
+        // 3) Divide the product of the denominators by the GCD
+        public static BigInteger LeastCommonDenominator(BigRational x, BigRational y) {
+            // LCD( a/b, c/d ) == (bd) / gcd(b,d)
+            return (x._denominator * y._denominator) / BigInteger.GreatestCommonDivisor(x._denominator, y._denominator);
+        }
+        
+        public static int Compare(BigRational r1, BigRational r2) {
+            //     a/b = c/d, iff ad = bc
+            return BigInteger.Compare(r1._numerator * r2._denominator, r2._numerator * r1._denominator);
+        }
+        
         private static BigRational Reduce(BigRational val)
         {
             var reduced = new BigRational {_denominator = val._denominator, _numerator = val._numerator};
@@ -132,6 +211,24 @@ namespace Blackbird.Stark.Math
                 return (_numerator * other._denominator) == (_denominator * other._numerator);
             }
         }
+
+        public int CompareTo(BigRational other)
+        {
+            return Compare(this, other);
+        }
+
+        public override bool Equals(Object obj) {
+            if (obj == null)
+                return false;
+
+            if (!(obj is BigRational))
+                return false;
+            return this.Equals((BigRational)obj);
+        }
+
+        public override int GetHashCode() {
+            return (_numerator / _denominator).GetHashCode();
+        }
         
         public override string ToString()
         {
@@ -152,6 +249,48 @@ namespace Blackbird.Stark.Math
 
             return $"{whole}.{fraction}";
         }
+
+        public void OnDeserialization(object sender)
+        {
+            try {
+                // verify that the deserialized number is well formed
+                if (_denominator.Sign == 0 || _numerator.Sign == 0) {
+                    // n/0 -> 0/1
+                    // 0/m -> 0/1
+                    _numerator = BigInteger.Zero;
+                    _denominator = BigInteger.One;
+                }
+                else if (_denominator.Sign < 0) {
+                    _numerator = BigInteger.Negate(_numerator);
+                    _denominator = BigInteger.Negate(_denominator);
+                }
+
+                this = Reduce(this);
+            }
+            catch (ArgumentException e) {
+                throw new SerializationException("invalid serialization data", e);
+            }
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null) {
+                throw new ArgumentNullException("info");
+            }
+
+            info.AddValue("Numerator", _numerator);
+            info.AddValue("Denominator", _denominator);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null)
+                return 1;
+            if (!(obj is BigRational))
+                return 1;
+            return Compare(this, (BigRational)obj);
+        }
+
         #endregion
 
         #region Operators
@@ -179,6 +318,46 @@ namespace Blackbird.Stark.Math
         public static BigRational operator % (BigRational r1, BigRational r2) {
             // a/b % c/d  == (ad % bc)/bd
             return new BigRational((r1._numerator * r2._denominator) % (r1._denominator * r2._numerator), (r1._denominator * r2._denominator));
+        }
+        
+        public static bool operator ==(BigRational x, BigRational y) {
+            return Compare(x, y) == 0;
+        }
+
+        public static bool operator !=(BigRational x, BigRational y) {
+            return Compare(x, y) != 0;
+        }
+
+        public static bool operator <(BigRational x, BigRational y) {
+            return Compare(x, y) < 0;
+        }
+
+        public static bool operator <=(BigRational x, BigRational y) {
+            return Compare(x, y) <= 0;
+        }
+
+        public static bool operator >(BigRational x, BigRational y) {
+            return Compare(x, y) > 0;
+        }
+
+        public static bool operator >=(BigRational x, BigRational y) {
+            return Compare(x, y) >= 0;
+        }
+ 
+        public static BigRational operator +(BigRational r) {
+            return r;
+        }
+
+        public static BigRational operator -(BigRational r) {
+            return new BigRational(-r._numerator, r._denominator);
+        }
+
+        public static BigRational operator ++ (BigRational r) {
+            return r + BigRational.One;
+        }
+
+        public static BigRational operator -- (BigRational r) {
+            return r - BigRational.One;
         }
         
         #endregion
