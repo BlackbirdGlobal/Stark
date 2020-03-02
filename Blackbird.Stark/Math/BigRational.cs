@@ -18,7 +18,7 @@ namespace Blackbird.Stark.Math
         /// Gets or sets how much numbers after delimiter will be returned by ToString().
         /// Default value is 512;
         /// </summary>
-        public int Precision { get; set; }
+        public static int Precision { get; set; } = 512;
         
         #endregion
         
@@ -36,12 +36,10 @@ namespace Blackbird.Stark.Math
         {
             _numerator = val;
             _denominator = BigInteger.One;
-            Precision = 512;
         }
         
         public BigRational(BigInteger numerator, BigInteger denominator)
         {
-            Precision = 512;
             if (denominator.Sign == 0) {
                 throw new DivideByZeroException();
             }
@@ -84,7 +82,7 @@ namespace Blackbird.Stark.Math
             //only 17 digits max according to MSDN
             this = Parse(value.ToString("F17"));
         }
-
+        
         #endregion
 
         #region Static Methods
