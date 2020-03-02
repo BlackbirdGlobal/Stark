@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageVersion>1.0.1</PackageVersion>
+    <PackageVersion>1.0.2</PackageVersion>
     <Title>Blackbird.Stark</Title>
     <Authors>Artem Drozdov</Authors>
     <Description>Handy Computer Science algorithms and data structures.</Description>
@@ -11,6 +11,8 @@
     <Copyright>Artem Drozdov</Copyright>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Blackbird-tech/Stark/master/License.md</PackageLicenseUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl>https://raw.githubusercontent.com/Blackbird-tech/Stark/master/icon.png</PackageIconUrl>
   </PropertyGroup>
   
 </Project>

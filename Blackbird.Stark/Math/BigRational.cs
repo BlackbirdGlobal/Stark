@@ -72,14 +72,14 @@ namespace Blackbird.Stark.Math
             Precision = (int)info.GetValue("Precision", typeof(int));
         }
 
-        private BigRational(decimal value)
+        public BigRational(decimal value)
         {
             //only 29 digits max according to MSDN
             var str = value.ToString("F29");
             this = Parse(str);
         }
 
-        private BigRational(double value)
+        public BigRational(double value)
         {
             //only 17 digits max according to MSDN
             this = Parse(value.ToString("F17"));
