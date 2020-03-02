@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/Blackbird-tech/Stark</RepositoryUrl>
     <Copyright>Artem Drozdov</Copyright>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Blackbird-tech/Stark/master/License.md</PackageLicenseUrl>
   </PropertyGroup>
   
 </Project>
