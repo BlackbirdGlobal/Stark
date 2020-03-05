@@ -30,5 +30,11 @@ namespace Blackbird.Stark.UnitTests
             Assert.Equal(brs, brd);
             Assert.Equal(brs.ToString(), brd.ToString());
         }
+
+        [Fact]
+        public void ToString_Zero_ReturnsZeroDotZero()
+        {
+            var result = BigRational.Zero.ToString();
+        }
     }
 }

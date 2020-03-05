@@ -276,6 +276,7 @@ namespace Blackbird.Stark.Math
                 i++;
             }
 
+            fraction = fraction ?? "0";
             return $"{whole}.{fraction}";
         }
 
