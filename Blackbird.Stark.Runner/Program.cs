@@ -10,7 +10,7 @@ namespace Blackbird.Stark.Runner
             var a = BigRational.One;
             while (true)
             {
-                a *= 1.0fix1;
+                a *= 1.01;
                 Console.WriteLine(a);
             }
         }
