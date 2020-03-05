@@ -73,14 +73,22 @@ namespace Blackbird.Stark.Math
         public BigRational(decimal value)
         {
             //only 29 digits max according to MSDN
-            var str = value.ToString("F29");
-            this = Parse(str);
+            _denominator = BigInteger.One;;
+            while (value % 1 > 0)
+            {
+                _denominator *= 10;
+                value *= 10;
+            }
+            _numerator = new BigInteger(value);
+            this = Reduce(this);
         }
 
-        public BigRational(double value)
+        public BigRational(double value): this(new decimal(value))
         {
-            //only 17 digits max according to MSDN
-            this = Parse(value.ToString("F17"));
+        }
+
+        private BigRational(float value) : this(new decimal(value))
+        {
         }
         
         #endregion
@@ -386,35 +394,35 @@ namespace Blackbird.Stark.Math
         
         #region Implicit Casts
         
-        public static implicit operator BigRational(SByte value) {           
+        public static implicit operator BigRational(sbyte value) {           
             return new BigRational((BigInteger)value);
         }
         
-        public static implicit operator BigRational(UInt16 value) {           
+        public static implicit operator BigRational(ushort value) {           
             return new BigRational((BigInteger)value);
         }
         
-        public static implicit operator BigRational(UInt32 value) {           
+        public static implicit operator BigRational(uint value) {           
             return new BigRational((BigInteger)value);
         }
         
-        public static implicit operator BigRational(UInt64 value) {           
+        public static implicit operator BigRational(ulong value) {           
             return new BigRational((BigInteger)value);
         }
 
-        public static implicit operator BigRational(Byte value) {           
+        public static implicit operator BigRational(byte value) {           
             return new BigRational((BigInteger)value);
         }
 
-        public static implicit operator BigRational(Int16 value) {           
+        public static implicit operator BigRational(short value) {           
             return new BigRational((BigInteger)value);
         }
 
-        public static implicit operator BigRational(Int32 value) {           
+        public static implicit operator BigRational(int value) {           
             return new BigRational((BigInteger)value);
         }
 
-        public static implicit operator BigRational(Int64 value) {           
+        public static implicit operator BigRational(long value) {           
             return new BigRational((BigInteger)value);
         }
 
@@ -422,15 +430,15 @@ namespace Blackbird.Stark.Math
             return new BigRational(value);
         }
 
-        public static implicit operator BigRational(Single value) { 
-            return new BigRational((Double)value);
-        }
-
-        public static implicit operator BigRational(Double value) {      
+        public static implicit operator BigRational(float value) { 
             return new BigRational(value);
         }
 
-        public static implicit operator BigRational(Decimal value) {      
+        public static implicit operator BigRational(double value) {      
+            return new BigRational(value);
+        }
+
+        public static implicit operator BigRational(decimal value) {      
             return new BigRational(value);
         }
         
