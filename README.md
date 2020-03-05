@@ -5,12 +5,12 @@ Stark is a computer science algorithms library. It is designed to build new algo
 
 ## Features:
 
-+ *Blackbird.Stark.Math.BigRational* - BigInteger with floating point value for really huge calculations. Might be helpful for calculators development, etc.
++ *Blackbird.Stark.Math.BigRational* - BigInteger with floating point value for really huge calculations. Precision might be adjusted, default value is 512 symbols after delimiter. Might be helpful for calculators development, etc.
 
 + *Blackbird.Stark.Ranges.Range* - class that helps you work with ranges, you can find out whether they are overlapping and you can merge Ranges to one. Also there is extension methods for *IEnumberable<Range>* that merges all ranges that overlap. Might be helpful during sports programming.
  
 + *Blackbird.Stark.Graph* - some APIs that can build graphs from char matrixes and search in graph using BFS. I used it for sports programming contests.
 
-+ *Blackbird.Stark.Trees* - there is two implementation of tree - AVL Tree and BinarySearch Tree. Might be used for performance critical apps as data containers.
++ *Blackbird.Stark.Trees* - there is two implementation of tree - AVL Tree and BinarySearch Tree. Might be used for performance critical apps as data containers. More trees will be added later.
 
 + *Blackbird.Stark.Collections* - there is my LinkedList implementation, since .NET has only ArrayLists. There is also TreeDictionary that is wrapper around trees mentioned above. You can use tree as conatiner for a dictionary.
