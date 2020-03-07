@@ -11,7 +11,13 @@ namespace Blackbird.Stark.Math
         #region Instance Fields
         
         private BigInteger _numerator;
-        private BigInteger _denominator;
+        private BigInteger _denominator ;
+        
+        private BigInteger Denominator
+        {
+            get => _denominator == default ? BigInteger.One : _denominator;
+            set => _denominator = value;
+        }
         public int Sign => _numerator.Sign;
 
         /// <summary>
@@ -109,14 +115,14 @@ namespace Blackbird.Stark.Math
             if (delimiterIndex == -1)
             {
                 result._numerator = BigInteger.Parse(val);
-                result._denominator = BigInteger.One;
+                result.Denominator = BigInteger.One;
             }
             else
             {
                 // get count of signs after delimiter
                 // xxx.zzz = xxxzzz/1000 
                 var numbersAfterDelimiter = val.Length - delimiterIndex -1;
-                result._denominator = BigInteger.Pow(10, numbersAfterDelimiter);
+                result.Denominator = BigInteger.Pow(10, numbersAfterDelimiter);
                 result._numerator = BigInteger.Parse(val.Remove(delimiterIndex, 1));
                 result = Reduce(result);   
             }
@@ -139,15 +145,15 @@ namespace Blackbird.Stark.Math
         }
         
         public static BigRational Abs(BigRational r) {
-            return (r._numerator.Sign < 0 ? new BigRational(BigInteger.Abs(r._numerator), r._denominator) : r);
+            return (r._numerator.Sign < 0 ? new BigRational(BigInteger.Abs(r._numerator), r.Denominator) : r);
         }
         
         public static BigRational Negate(BigRational r) {
-            return new BigRational(BigInteger.Negate(r._numerator), r._denominator);
+            return new BigRational(BigInteger.Negate(r._numerator), r.Denominator);
         }
 
         public static BigRational Invert(BigRational r) {
-            return new BigRational(r._denominator, r._numerator);
+            return new BigRational(r.Denominator, r._numerator);
         }
 
         public static BigRational Add(BigRational x, BigRational y) {
@@ -180,7 +186,7 @@ namespace Blackbird.Stark.Math
 
             if (exponent.Sign < 0) {
                 if (baseValue == Zero) {
-                    throw new ArgumentException("cannot raise zero to a negative power", "baseValue");
+                    throw new ArgumentException("cannot raise zero to a negative power", nameof(baseValue));
                 }
                 // n^(-e) = (1/n)^e
                 baseValue = Invert(baseValue);
@@ -198,29 +204,29 @@ namespace Blackbird.Stark.Math
         
         public static BigInteger LeastCommonDenominator(BigRational x, BigRational y) {
             // LCD( a/b, c/d ) == (bd) / gcd(b,d)
-            return (x._denominator * y._denominator) / BigInteger.GreatestCommonDivisor(x._denominator, y._denominator);
+            return (x.Denominator * y.Denominator) / BigInteger.GreatestCommonDivisor(x.Denominator, y.Denominator);
         }
         
         public static int Compare(BigRational r1, BigRational r2) {
             // a/b = c/d, if ad = bc
-            return BigInteger.Compare(r1._numerator * r2._denominator, r2._numerator * r1._denominator);
+            return BigInteger.Compare(r1._numerator * r2.Denominator, r2._numerator * r1.Denominator);
         }
         
         private static BigRational Reduce(BigRational val)
         {
-            var reduced = new BigRational {_denominator = val._denominator, _numerator = val._numerator};
+            var reduced = new BigRational {Denominator = val.Denominator, _numerator = val._numerator};
 
             if (val._numerator == BigInteger.Zero)
             {
-                reduced._denominator = BigInteger.One;
+                reduced.Denominator = BigInteger.One;
             }
 
-            var gcd = BigInteger.GreatestCommonDivisor(val._numerator, val._denominator);
+            var gcd = BigInteger.GreatestCommonDivisor(val._numerator, val.Denominator);
             
             if (gcd > BigInteger.One)
             {
                 reduced._numerator = val._numerator / gcd;
-                reduced._denominator = val._denominator / gcd;
+                reduced.Denominator = val.Denominator / gcd;
             }
 
             return reduced;
@@ -232,11 +238,11 @@ namespace Blackbird.Stark.Math
         
         public bool Equals(BigRational other)
         {
-            if (_denominator == other._denominator) {
+            if (Denominator == other.Denominator) {
                 return _numerator == other._numerator;
             }
 
-            return (_numerator * other._denominator) == (_denominator * other._numerator);
+            return (_numerator * other.Denominator) == (Denominator * other._numerator);
         }
 
         public int CompareTo(BigRational other)
@@ -254,22 +260,22 @@ namespace Blackbird.Stark.Math
         }
 
         public override int GetHashCode() {
-            return (_numerator / _denominator).GetHashCode();
+            return (_numerator / Denominator).GetHashCode();
         }
         
         public override string ToString()
         {
-            var whole = BigInteger.Divide(_numerator, _denominator).ToString("R", CultureInfo.InvariantCulture);
+            var whole = BigInteger.Divide(_numerator, Denominator).ToString("R", CultureInfo.InvariantCulture);
             string fraction = default;
-            var r = BigInteger.Remainder(_numerator, _denominator);
+            var r = BigInteger.Remainder(_numerator, Denominator);
             r = r < 0 ? -r : r;
             var tmp = r;
             var i = 0;
             while (r > 0 && i < Precision)
             {
                 tmp *= 10;
-                r = BigInteger.Remainder(tmp, _denominator);
-                var w = BigInteger.Divide(tmp, _denominator);
+                r = BigInteger.Remainder(tmp, Denominator);
+                var w = BigInteger.Divide(tmp, Denominator);
                 if (w > 0)
                     tmp = r;
                 fraction +=  w.ToString("R", CultureInfo.InvariantCulture);
@@ -284,15 +290,15 @@ namespace Blackbird.Stark.Math
         {
             try {
                 // verify that the deserialized number is well formed
-                if (_denominator.Sign == 0 || _numerator.Sign == 0) {
+                if (Denominator.Sign == 0 || _numerator.Sign == 0) {
                     // n/0 = 0/1
                     // 0/m = 0/1
                     _numerator = BigInteger.Zero;
-                    _denominator = BigInteger.One;
+                    Denominator = BigInteger.One;
                 }
                 else if (_denominator.Sign < 0) {
                     _numerator = BigInteger.Negate(_numerator);
-                    _denominator = BigInteger.Negate(_denominator);
+                    Denominator = BigInteger.Negate(Denominator);
                 }
 
                 this = Reduce(this);
@@ -305,11 +311,11 @@ namespace Blackbird.Stark.Math
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null) {
-                throw new ArgumentNullException("info");
+                throw new ArgumentNullException(nameof(info));
             }
 
             info.AddValue("Numerator", _numerator);
-            info.AddValue("Denominator", _denominator);
+            info.AddValue("Denominator", Denominator);
             info.AddValue("Precision", Precision);
         }
 
@@ -328,27 +334,27 @@ namespace Blackbird.Stark.Math
         
         public static BigRational operator + (BigRational r1, BigRational r2) {
             // a/b + c/d  = (ad + bc)/bd
-            return new BigRational((r1._numerator * r2._denominator) + (r1._denominator * r2._numerator), (r1._denominator * r2._denominator));
+            return new BigRational((r1._numerator * r2.Denominator) + (r1.Denominator * r2._numerator), (r1.Denominator * r2.Denominator));
         }
         
         public static BigRational operator - (BigRational r1, BigRational r2) {
             // a/b - c/d  = (ad - bc)/bd
-            return new BigRational((r1._numerator * r2._denominator) - (r1._denominator * r2._numerator), (r1._denominator * r2._denominator));
+            return new BigRational((r1._numerator * r2.Denominator) - (r1.Denominator * r2._numerator), (r1.Denominator * r2.Denominator));
         }
 
         public static BigRational operator * (BigRational r1, BigRational r2) {
             // a/b * c/d  = (ac)/(bd)
-            return new BigRational((r1._numerator * r2._numerator), (r1._denominator * r2._denominator));
+            return new BigRational((r1._numerator * r2._numerator), (r1.Denominator * r2.Denominator));
         }
 
         public static BigRational operator / (BigRational r1, BigRational r2) {
             // a/b / c/d  = (ad)/(bc)
-            return new BigRational((r1._numerator * r2._denominator), (r1._denominator * r2._numerator));
+            return new BigRational((r1._numerator * r2.Denominator), (r1.Denominator * r2._numerator));
         }
 
         public static BigRational operator % (BigRational r1, BigRational r2) {
             // a/b % c/d  = (ad % bc)/bd
-            return new BigRational((r1._numerator * r2._denominator) % (r1._denominator * r2._numerator), (r1._denominator * r2._denominator));
+            return new BigRational((r1._numerator * r2.Denominator) % (r1.Denominator * r2._numerator), (r1.Denominator * r2.Denominator));
         }
         
         public static bool operator ==(BigRational x, BigRational y) {
