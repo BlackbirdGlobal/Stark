@@ -1,3 +1,4 @@
+using System.Globalization;
 using Blackbird.Stark.Math;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace Blackbird.Stark.UnitTests
             //Arrange
             const decimal d = 1234.1234m;
             //Act
-            var brs = BigRational.Parse(d.ToString());
+            var brs = BigRational.Parse(d.ToString(CultureInfo.InvariantCulture));
             var brd = new BigRational(d);
             //Assert
             Assert.Equal(brs, brd);
@@ -24,7 +25,7 @@ namespace Blackbird.Stark.UnitTests
             //Arrange
             const double d = 1234.1234;
             //Act
-            var brs = BigRational.Parse(d.ToString());
+            var brs = BigRational.Parse(d.ToString(CultureInfo.InvariantCulture));
             var brd = new BigRational(d);
             //Assert
             Assert.Equal(brs, brd);
