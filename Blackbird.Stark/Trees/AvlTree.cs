@@ -5,7 +5,7 @@ namespace Blackbird.Stark.Trees
 {
     public class AvlTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
     {
-        private AvlNode<TK, TV> _root;
+        internal AvlNode<TK, TV> _root;
 
         public void Add(TK key, TV value)
         {
@@ -32,28 +32,35 @@ namespace Blackbird.Stark.Trees
                 }
 
                 Count++;
-                //balance tree
-                var balance = parent.Balance;
 
-                switch (balance)
+                //node.RefreshHeight();
+                while (parent != null)
                 {
-                    case int b when b > 1 && node.Key.CompareTo(parent.Left.Key) == -1:
-                        _root = RightRotate(parent);
-                        break;
-                    case int b when b > 1 && node.Key.CompareTo(parent.Left.Key) == 1:
-                        parent.Left = LeftRotate(parent.Left);
-                        _root = RightRotate(parent);
-                        break;
-                    case int b when b < -1 && node.Key.CompareTo(parent.Right.Key) == 1:
-                        _root = LeftRotate(parent);
-                        break;
-                    case int b when b < -1 && node.Key.CompareTo(parent.Right.Key) == -1:
-                        parent.Right = RightRotate(parent.Right);
-                        _root = LeftRotate(parent);
-                        break;
-                    case int b when b < -1 && node.Key.CompareTo(node.Right.Key) == 1:
-                        _root = LeftRotate(parent);
-                        break;
+                    //balance tree
+                    parent.RefreshHeight();
+                    var balance = parent.Balance;
+
+                    switch (balance)
+                    {
+                        case int b when b > 1 && node.Key.CompareTo(parent.Left.Key) == -1:
+                            parent = RightRotate(parent);
+                            break;
+                        case int b when b > 1 && node.Key.CompareTo(parent.Left.Key) == 1:
+                            parent.Left = LeftRotate(parent.Left);
+                            parent = RightRotate(parent);
+                            break;
+                        case int b when b < -1 && node.Key.CompareTo(parent.Right.Key) == 1:
+                            parent = LeftRotate(parent);
+                            break;
+                        case int b when b < -1 && node.Key.CompareTo(parent.Right.Key) == -1:
+                            parent.Right = RightRotate(parent.Right);
+                            parent = LeftRotate(parent);
+                            break;
+                    }
+
+                    _root = parent.IsRoot ? parent : _root;
+
+                    parent = parent.Parent;
                 }
             }
         }
@@ -63,9 +70,7 @@ namespace Blackbird.Stark.Trees
             var y = x.Right;
             var t2 = y.Left;
 
-            if (x.IsRoot)
-                _root = y;
-            else
+            if (!x.IsRoot)
             {
                 if (x.Parent.Left == x)
                     x.Parent.Left = y;
@@ -79,7 +84,8 @@ namespace Blackbird.Stark.Trees
 
             x.Parent = y;
             x.Right = t2;
-            t2.Parent = x;
+            if(t2 != null)
+                t2.Parent = x;
 
             // Update heights  
             x.RefreshHeight();
@@ -94,11 +100,7 @@ namespace Blackbird.Stark.Trees
             var x = y.Left;
             var t2 = x.Right;
 
-            if (y.IsRoot)
-            {
-                _root = x;
-            }
-            else
+            if (!y.IsRoot)
             {
                 if (y.Parent.Left == y)
                 {
@@ -116,7 +118,8 @@ namespace Blackbird.Stark.Trees
 
             y.Parent = x;
             y.Left = t2;
-            t2.Parent = y;
+            if(t2 != null)
+                t2.Parent = y;
 
             // Update heights  
             y.RefreshHeight();

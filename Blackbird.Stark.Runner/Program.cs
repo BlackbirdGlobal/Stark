@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Numerics;
-using Blackbird.Stark.Math;
+using System.Runtime.CompilerServices;
+using Blackbird.Stark.Collections;
+using Blackbird.Stark.Trees;
 
 namespace Blackbird.Stark.Runner
 {
@@ -8,8 +9,16 @@ namespace Blackbird.Stark.Runner
     {
         static void Main(string[] args)
         {
-            BigRational b = default;
-            Console.WriteLine(b);
+            var d = new TreeDictionary<string, string>(new AvlTree<string, string>())
+            {
+                {"foo", "bar"}, {"marco", "polo"}, {"ultra", "dyading"}, {"tuning","dyading"}
+            };
+            Console.WriteLine(d["marco"]);
+            Console.WriteLine(d["ultra"]);
+            Console.WriteLine(d["foo"]);
+            Console.WriteLine(d.Remove("foo"));
+            Console.WriteLine(d["ultra"]);
+            Console.WriteLine(d["marco"]);
         }
     }
 }
