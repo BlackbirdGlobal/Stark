@@ -75,14 +75,14 @@ namespace Blackbird.Stark.Extensions
             {
                 for (int j = 0; j < str[i].Length; j++)
                 {
-                    if (str[i][j] == '┕')
+                    if (str[i][j] == '╚')
                     {
                         for (int k = i-1; k >= 0; k--)
                         {
                             if (j < str[k].Length) 
                                 if(str[k][j] == ' ')
                                 {
-                                    var sb = new StringBuilder(str[k]) {[j] = '|'};
+                                    var sb = new StringBuilder(str[k]) {[j] = '║'};
                                     str[k] = sb.ToString();
                                 }
                                 else
@@ -111,7 +111,7 @@ namespace Blackbird.Stark.Extensions
             }
             if (level != 0)
             {
-                sb.Append("┕---");
+                sb.Append("╚═══");
             }
 
             sb.Append(key);
