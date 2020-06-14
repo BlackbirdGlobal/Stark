@@ -1,6 +1,6 @@
 using System;
 
-namespace Blackbird.Stark.Trees
+namespace Blackbird.Stark.Trees.Nodes
 {
     internal class BinaryNode<TK,TV> where TK:IComparable<TK>
     {

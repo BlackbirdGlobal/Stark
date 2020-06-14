@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Blackbird.Stark.Trees.Nodes;
 
-namespace Blackbird.Stark.Trees
+namespace Blackbird.Stark.Trees.Enumerators
 {
     internal class BinaryTreeEnumerator<K, V> : IEnumerator<KeyValuePair<K, V>> where K:IComparable<K>
     {

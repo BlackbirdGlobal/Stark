@@ -7,7 +7,6 @@ namespace Blackbird.Stark.Graphs.Builders
     {
         public char Obstacle = 'X';
         public char Start = 'M';
-        public char Destination = '*';
         private readonly Queue<Entry<char, int>> Q = new Queue<Entry<char, int>>();
 
         public GraphNode<char, int> Build(string[] s)

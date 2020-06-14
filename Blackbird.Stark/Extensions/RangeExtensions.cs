@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Blackbird.Stark.Ranges;
 
-namespace Blackbird.Stark.Ranges
+namespace Blackbird.Stark.Extensions
 {
-    public static class Extensions
+    public static class RangeExtensions
     {
         public static IEnumerable<Range> MergeOverlappingRanges(this IEnumerable<Range> self)
         {

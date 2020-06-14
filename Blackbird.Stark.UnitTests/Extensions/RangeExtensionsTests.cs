@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using Blackbird.Stark.Extensions;
 using Blackbird.Stark.Ranges;
 using Xunit;
 
-namespace Blackbird.Stark.UnitTests
+namespace Blackbird.Stark.UnitTests.Extensions
 {
     public class RangeExtensionsTests
     {

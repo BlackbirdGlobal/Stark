@@ -2,7 +2,7 @@ using System.Numerics;
 using Blackbird.Stark.Extensions;
 using Xunit;
 
-namespace Blackbird.Stark.UnitTests
+namespace Blackbird.Stark.UnitTests.Extensions
 {
     public class BigIntegerExtensionsTests
     {

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Blackbird.Stark.Trees.Enumerators;
+using Blackbird.Stark.Trees.Nodes;
 
 [assembly: InternalsVisibleTo("Blackbird.Stark.UnitTests")]
 namespace Blackbird.Stark.Trees

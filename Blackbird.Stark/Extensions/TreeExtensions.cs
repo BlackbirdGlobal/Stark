@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Blackbird.Stark.Trees;
+using Blackbird.Stark.Trees.Nodes;
 
 namespace Blackbird.Stark.Extensions
 {
@@ -98,7 +99,6 @@ namespace Blackbird.Stark.Extensions
                 Console.WriteLine(line);
             }
         }
-
         private static string RenderKey<K>(int level, K key) where K : IComparable<K>
         {
             var sb = new StringBuilder();
@@ -117,7 +117,6 @@ namespace Blackbird.Stark.Extensions
             sb.Append(key);
             return sb.ToString();
         }
-
         private static List<List<BinaryNode<K,V>>> GenerateLevelMap<K,V>(BinaryNode<K,V> tree) where K: IComparable<K>
         {
             var levels = new List<List<BinaryNode<K,V>>>();

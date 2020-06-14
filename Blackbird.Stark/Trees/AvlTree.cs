@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Blackbird.Stark.Trees.Enumerators;
+using Blackbird.Stark.Trees.Nodes;
 
 namespace Blackbird.Stark.Trees
 {

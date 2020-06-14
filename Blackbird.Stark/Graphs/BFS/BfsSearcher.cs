@@ -15,7 +15,7 @@ namespace Blackbird.Stark.Graphs.BFS
             Q = new Queue<GraphNode<T, TD>>();
         }
 
-        public SearchResult<T, TD> Search(T val, Action<GraphNode<T, TD>, T> f)
+        public SearchResult<T, TD> Search(T val, Action<GraphNode<T, TD>, T> func)
         {
             if (Q.Count == 0)
             {
@@ -25,7 +25,7 @@ namespace Blackbird.Stark.Graphs.BFS
             {
                 var node = Q.Dequeue();
                 node.Status = DiscoveryStatus.Discovered;
-                f(node, val);
+                func(node, val);
                 if (node.Value.Equals(val))
                 {
                     return new SearchResult<T, TD>() { Found = true, Result = node };
