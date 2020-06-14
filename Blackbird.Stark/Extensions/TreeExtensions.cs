@@ -80,16 +80,23 @@ namespace Blackbird.Stark.Extensions
                     {
                         for (int k = i-1; k >= 0; k--)
                         {
-                            if (j < str[k].Length) 
-                                if(str[k][j] == ' ')
+                            if (j < str[k].Length)
+                            {
+                                if (str[k][j] == ' ')
                                 {
                                     var sb = new StringBuilder(str[k]) {[j] = '║'};
                                     str[k] = sb.ToString();
                                 }
                                 else
                                 {
+                                    if (str[k][j] == '╚')
+                                    {
+                                        var sb = new StringBuilder(str[k]){[j] = '╠'};
+                                        str[k] = sb.ToString();
+                                    }
                                     break;
                                 }
+                            }
                         }
                     }
                 }
