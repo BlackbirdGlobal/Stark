@@ -1,7 +1,7 @@
 using Blackbird.Stark.Trees;
 using Xunit;
 
-namespace Blackbird.Stark.UnitTests
+namespace Blackbird.Stark.UnitTests.Trees
 {
     public class AvlTreeTests
     {
@@ -33,6 +33,37 @@ namespace Blackbird.Stark.UnitTests
             Assert.Equal(0, result.Left.Left.Key);
             Assert.Equal(-1, result.Left.Left.Left.Key);
         }
+        
+        [Fact]
+        public void GeeksForGeeks_TreeConstructionAndRemoval()
+        {
+            //Arrange
+            var avl = new AvlTree<int,string>();
+            
+            avl.Add(9,"9");
+            avl.Add(5,"5");
+            avl.Add(10,"10");
+            avl.Add(0,"0");
+            avl.Add(6,"6");
+            avl.Add(11,"11");
+            avl.Add(-1,"-1");
+            avl.Add(1,"1");
+            avl.Add(2,"2");
+            //Act
+            var result = avl.Remove(10);
+            var tree = avl._root;
+            //Assert
+            Assert.True(result);
+            Assert.Equal(1, tree.Key);
+            Assert.Equal(9,tree.Right.Key);
+            Assert.Equal(0, tree.Left.Key);
+            Assert.Equal(11, tree.Right.Right.Key);
+            Assert.Equal(5, tree.Right.Left.Key);
+            Assert.Equal(6, tree.Right.Left.Right.Key);
+            Assert.Equal(2, tree.Right.Left.Left.Key);
+            Assert.Equal(-1, tree.Left.Left.Key);
+        }
+        
         [Fact]
         public void GeeksForGeeks_AvlTest()
         {

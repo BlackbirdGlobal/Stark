@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Blackbird.Stark.Trees;
 using Xunit;
-using Xunit.Sdk;
 
-namespace Blackbird.Stark.UnitTests
+namespace Blackbird.Stark.UnitTests.Trees
 {
     public class BinaryTreeTests
     {

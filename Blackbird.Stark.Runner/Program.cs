@@ -11,7 +11,7 @@ namespace Blackbird.Stark.Runner
         static void Main(string[] args)
         {
             var avl = new AvlTree<int, string>();
-            for(int i=0; i< 100000; i++)
+            for(int i=0; i< 100; i++)
                 avl.Add(i,i.ToString());
             
             
