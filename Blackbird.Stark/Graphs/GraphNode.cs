@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Blackbird.Stark.Graphs.Search;
 
 namespace Blackbird.Stark.Graphs
 {

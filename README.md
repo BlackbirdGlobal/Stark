@@ -24,3 +24,6 @@ Stark is a computer science algorithms library. It is designed to build new algo
 + All trees can be printed to console with *PrintTree* method. Might be used for debug or visualisation. Each node has two indented children, first one is right child and the 2nd is left.
 
 + Small bug fixes
+
+---
+Crafted with love in Kyiv

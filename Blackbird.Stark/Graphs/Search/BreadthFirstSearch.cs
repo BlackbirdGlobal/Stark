@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Blackbird.Stark.Graphs.BFS
+namespace Blackbird.Stark.Graphs.Search
 {
-    public class BfsSearcher<T, TD> : IGraphSearcher<T, TD> where T : IEquatable<T>
+    public class BreadthFirstSearch<T, TD> : IGraphSearch<T, TD> where T : IEquatable<T>
     {
         public GraphNode<T, TD> Graph { get; set; }
         private Queue<GraphNode<T, TD>> Q { get; set; }
 
-        public BfsSearcher(GraphNode<T, TD> root)
+        public BreadthFirstSearch(GraphNode<T, TD> root)
         {
             Graph = root;
             Q = new Queue<GraphNode<T, TD>>();

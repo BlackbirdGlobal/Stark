@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Blackbird.Stark.Graphs
+namespace Blackbird.Stark.Graphs.Search
 {
-    public interface IGraphSearcher<T, TD> where T : IEquatable<T>
+    public interface IGraphSearch<T, TD> where T : IEquatable<T>
     {
         GraphNode<T, TD> Graph { get; set; }
 

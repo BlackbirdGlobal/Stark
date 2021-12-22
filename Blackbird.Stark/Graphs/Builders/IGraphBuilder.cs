@@ -2,8 +2,8 @@
 
 namespace Blackbird.Stark.Graphs.Builders
 {
-    public interface IGraphBuilder<M, T, TD> where T : IEquatable<T>
+    public interface IGraphBuilder<in TSource, TKey, TData> where TKey : IEquatable<TKey>
     {
-        GraphNode<T, TD> Build(M s);
+        GraphNode<TKey, TData> Build(TSource s);
     }
 }
