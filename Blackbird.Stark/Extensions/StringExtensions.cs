@@ -4,8 +4,6 @@ namespace Blackbird.Stark.Extensions
 {
     public static class StringExtensions
     {
-        private static readonly char[] Numbers = new []{'0','1','2','3','4','5','6','7','8','9'};
-         
         /// <summary>
         /// Checks whether string represents a valid number
         /// </summary>
@@ -31,10 +29,11 @@ namespace Blackbird.Stark.Extensions
                     return false;
                 }
 
-                if (!Numbers.Contains(trimmed[i]))
+                if (!char.IsNumber(trimmed[i]))
                     return false;
             }
             return true;
+            
         }
         
         public static bool IsNullOrWhiteSpace(this string self)
