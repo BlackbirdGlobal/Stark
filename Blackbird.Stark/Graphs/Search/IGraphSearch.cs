@@ -2,10 +2,10 @@
 
 namespace Blackbird.Stark.Graphs.Search
 {
-    public interface IGraphSearch<T, TD> where T : IEquatable<T>
+    public interface IGraphSearch<TKey, TData> where TKey : IEquatable<TKey>
     {
-        GraphNode<T, TD> Graph { get; set; }
+        GraphNode<TKey, TData> Graph { get; }
 
-        SearchResult<T, TD> Search(T val, Action<GraphNode<T, TD>, T> f);
+        SearchResult<TKey, TData> Search(TKey val, Action<GraphNode<TKey, TData>, TKey> func = null);
     }
 }

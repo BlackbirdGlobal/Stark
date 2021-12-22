@@ -14,12 +14,12 @@ namespace Blackbird.Stark.Graphs.Builders
         public GraphNode<char, int> Build(string[] s)
         {
             GraphNode<char, int> root = null;
-            (int i, int j) st = Search(Start, s);
+            var (i, j) = Search(Start, s);
             var eRoot = new Entry<char, int>()
             {
                 Value = Start,
-                I = st.i,
-                J = st.j
+                I = i,
+                J = j
             };
             _queue.Enqueue(eRoot);
             var processed = new bool[s.Length, s[0].Length];

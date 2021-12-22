@@ -4,31 +4,31 @@ using System.Linq;
 
 namespace Blackbird.Stark.Graphs.Search
 {
-    public class BreadthFirstSearch<T, TD> : IGraphSearch<T, TD> where T : IEquatable<T>
+    public class BreadthFirstSearch<TKey, TData> : IGraphSearch<TKey, TData> where TKey : IEquatable<TKey>
     {
-        public GraphNode<T, TD> Graph { get; set; }
-        private Queue<GraphNode<T, TD>> Q { get; set; }
+        public GraphNode<TKey, TData> Graph { get; set; }
+        private Queue<GraphNode<TKey, TData>> _queue { get; set; }
 
-        public BreadthFirstSearch(GraphNode<T, TD> root)
+        public BreadthFirstSearch(GraphNode<TKey, TData> root)
         {
             Graph = root;
-            Q = new Queue<GraphNode<T, TD>>();
+            _queue = new Queue<GraphNode<TKey, TData>>();
         }
 
-        public SearchResult<T, TD> Search(T val, Action<GraphNode<T, TD>, T> func)
+        public SearchResult<TKey, TData> Search(TKey val, Action<GraphNode<TKey, TData>, TKey> func = null)
         {
-            if (Q.Count == 0)
+            _queue.Clear();
+            _queue.Enqueue(Graph);
+            while (_queue.Count > 0)
             {
-                Q.Enqueue(Graph);
-            }
-            while (Q.Count > 0)
-            {
-                var node = Q.Dequeue();
+                var node = _queue.Dequeue();
                 node.Status = DiscoveryStatus.Discovered;
-                func(node, val);
+
+                func?.Invoke(node, val);
+
                 if (node.Value.Equals(val))
                 {
-                    return new SearchResult<T, TD>() { Found = true, Result = node };
+                    return new SearchResult<TKey, TData>() { Found = true, Result = node };
                 }
                 if (node.Children == null || node.Children.All(x => x.Status == DiscoveryStatus.Visited))
                 {
@@ -40,12 +40,12 @@ namespace Blackbird.Stark.Graphs.Search
                     {
                         if (c.Status != DiscoveryStatus.Visited)
                         {
-                            Q.Enqueue(c);
+                            _queue.Enqueue(c);
                         }
                     }
                 }
             }
-            return new SearchResult<T, TD>() { Found = false };
+            return new SearchResult<TKey, TData>() { Found = false };
         }
     }
 }
