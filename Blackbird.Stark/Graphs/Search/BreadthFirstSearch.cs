@@ -6,6 +6,7 @@ namespace Blackbird.Stark.Graphs.Search
 {
     public class BreadthFirstSearch<TKey, TData> : IGraphSearch<TKey, TData> where TKey : IEquatable<TKey>
     {
+        public event OnNodeDiscoveredDelegate<TKey, TData> OnNodeDiscovery; 
         public GraphNode<TKey, TData> Graph { get; set; }
         private Queue<GraphNode<TKey, TData>> _queue { get; set; }
 
@@ -15,7 +16,7 @@ namespace Blackbird.Stark.Graphs.Search
             _queue = new Queue<GraphNode<TKey, TData>>();
         }
 
-        public SearchResult<TKey, TData> Search(TKey val, Action<GraphNode<TKey, TData>, TKey> func = null)
+        public SearchResult<TKey, TData> Search(TKey val)
         {
             _queue.Clear();
             _queue.Enqueue(Graph);
@@ -24,7 +25,7 @@ namespace Blackbird.Stark.Graphs.Search
                 var node = _queue.Dequeue();
                 node.Status = DiscoveryStatus.Discovered;
 
-                func?.Invoke(node, val);
+                OnNodeDiscovery?.Invoke(node, val);
 
                 if (node.Value.Equals(val))
                 {

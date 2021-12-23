@@ -7,7 +7,9 @@ namespace Blackbird.Stark.Graphs.Search
 {
     public class DepthFirstSearch<TKey, TData> : IGraphSearch<TKey, TData> where TKey : IEquatable<TKey>
     {
-        private Stack<GraphNode<TKey, TData>> _stack = new Stack<GraphNode<TKey, TData>>();
+        public event OnNodeDiscoveredDelegate<TKey, TData> OnNodeDiscovery;
+        
+        private readonly Stack<GraphNode<TKey, TData>> _stack = new Stack<GraphNode<TKey, TData>>();
 
         public DepthFirstSearch(GraphNode<TKey, TData> graph)
         {
@@ -16,7 +18,7 @@ namespace Blackbird.Stark.Graphs.Search
 
         public GraphNode<TKey, TData> Graph { get; private set; }
 
-        public SearchResult<TKey, TData> Search(TKey val, Action<GraphNode<TKey, TData>, TKey> f = null)
+        public SearchResult<TKey, TData> Search(TKey val)
         {
             _stack.Clear();
             _stack.Push(Graph);
@@ -26,7 +28,7 @@ namespace Blackbird.Stark.Graphs.Search
                 var vertex = _stack.Pop();
                 if (vertex.Status != DiscoveryStatus.Discovered)
                 {
-                    f?.Invoke(vertex, val);
+                    OnNodeDiscovery?.Invoke(vertex, val);
                     if (vertex.Value.Equals(val))
                     {
                         return new SearchResult<TKey, TData>() { Found = true, Result = vertex };

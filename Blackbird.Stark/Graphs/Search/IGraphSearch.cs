@@ -6,6 +6,6 @@ namespace Blackbird.Stark.Graphs.Search
     {
         GraphNode<TKey, TData> Graph { get; }
 
-        SearchResult<TKey, TData> Search(TKey val, Action<GraphNode<TKey, TData>, TKey> func = null);
+        SearchResult<TKey, TData> Search(TKey val);
     }
 }
