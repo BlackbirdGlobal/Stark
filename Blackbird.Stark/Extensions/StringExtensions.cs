@@ -11,7 +11,7 @@ namespace Blackbird.Stark.Extensions
         /// <returns></returns>
         public static bool IsNumber(this string self)
         {
-            if (self.IsNullOrWhiteSpace())
+            if (string.IsNullOrWhiteSpace(self))
                 return false;
             var trimmed = self.Trim();
             var hasDelimiter = false;
@@ -24,6 +24,7 @@ namespace Blackbird.Stark.Extensions
                     hasDelimiter = true;
                     continue;
                 }
+
                 if (hasDelimiter && (trimmed[i] == '.' || trimmed[i] == ','))
                 {
                     return false;
@@ -32,18 +33,8 @@ namespace Blackbird.Stark.Extensions
                 if (!char.IsNumber(trimmed[i]))
                     return false;
             }
+
             return true;
-            
-        }
-        
-        public static bool IsNullOrWhiteSpace(this string self)
-        {
-            return string.IsNullOrWhiteSpace(self);
-        }
-        
-        public static bool IsNullOrEmpty(this string self)
-        {
-            return string.IsNullOrEmpty(self);
         }
     }
 }

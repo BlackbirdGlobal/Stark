@@ -19,12 +19,6 @@ namespace Blackbird.Stark.Math
             set => _denominator = value;
         }
         public int Sign => _numerator.Sign;
-
-        /// <summary>
-        /// Gets or sets how much numbers after delimiter will be returned by ToString().
-        /// Default value is 512;
-        /// </summary>
-        public static int Precision { get; set; } = 512;
         
         #endregion
         
@@ -73,7 +67,6 @@ namespace Blackbird.Stark.Math
 
             _numerator   = (BigInteger)info.GetValue("Numerator", typeof(BigInteger));
             _denominator = (BigInteger)info.GetValue("Denominator", typeof(BigInteger));
-            Precision = (int)info.GetValue("Precision", typeof(int));
         }
 
         public BigRational(decimal value)
@@ -263,7 +256,12 @@ namespace Blackbird.Stark.Math
             return (_numerator / Denominator).GetHashCode();
         }
         
-        public override string ToString()
+        /// <summary>
+        /// Converts to string representation of BigRational
+        /// </summary>
+        /// <param name="precision">value represents number of signs after the separator</param>
+        /// <returns></returns>
+        public string ToString(int precision = 512)
         {
             var whole = BigInteger.Divide(_numerator, Denominator).ToString("R", CultureInfo.InvariantCulture);
             string fraction = default;
@@ -271,7 +269,7 @@ namespace Blackbird.Stark.Math
             r = r < 0 ? -r : r;
             var tmp = r;
             var i = 0;
-            while (r > 0 && i < Precision)
+            while (r > 0 && i < precision)
             {
                 tmp *= 10;
                 r = BigInteger.Remainder(tmp, Denominator);
@@ -284,6 +282,11 @@ namespace Blackbird.Stark.Math
 
             fraction = fraction ?? "0";
             return $"{whole}.{fraction}";
+        }
+
+        public override string ToString()
+        {
+            return ToString();
         }
 
         public void OnDeserialization(object sender)
@@ -316,7 +319,6 @@ namespace Blackbird.Stark.Math
 
             info.AddValue("Numerator", _numerator);
             info.AddValue("Denominator", Denominator);
-            info.AddValue("Precision", Precision);
         }
 
         public int CompareTo(object obj)
