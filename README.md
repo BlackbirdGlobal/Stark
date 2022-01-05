@@ -26,9 +26,6 @@ Stark is a computer science algorithms library. It is designed to build new algo
 + Small bug fixes
 
 ---
-<p align="justify">
+<div style="text-align: center;">
 Crafted with love in Kyiv
-</p>
-| |
-| :-: |
-| Crafted with love in Kyiv |
+</div>
