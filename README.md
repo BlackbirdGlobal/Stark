@@ -21,7 +21,7 @@ Stark is a computer science algorithms library. It is designed to build new algo
 + Changed *BigRational* ToString method signature
 + Added Depth-First search for graphs
 + Added DateTime extension
-+ Added Red-Black tree
++ Working on Red-Black tree
 
 ### 1.0.6
 
