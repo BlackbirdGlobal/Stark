@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Blackbird.Stark.Collections;
 using Blackbird.Stark.Extensions;
@@ -10,13 +11,11 @@ namespace Blackbird.Stark.Runner
     {
         static void Main(string[] args)
         {
-            var avl = new AvlTree<int, string>();
-            for(int i=0; i< 100; i++)
-                avl.Add(i,i.ToString());
-            
-            
-            //avl.Remove(10);
-            avl.PrintTree();
+            var dt = DateTime.Now;
+            foreach (var d in dt.GetDatesOfDayOfWeek(DayOfWeek.Monday))
+            {
+                Console.WriteLine(d);
+            }
         }
     }
 }
