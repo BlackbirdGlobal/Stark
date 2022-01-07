@@ -16,6 +16,13 @@ namespace Blackbird.Stark.Runner
             {
                 Console.WriteLine(d);
             }
+            
+            
+            var tree = new RbTree<int, string>();
+            for(int i=0; i< 100; i++)
+                tree.Add(i,i.ToString());
+            
+            tree.PrintTree();
         }
     }
 }
