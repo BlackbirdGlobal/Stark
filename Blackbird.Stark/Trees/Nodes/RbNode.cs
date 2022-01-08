@@ -2,22 +2,27 @@ using System;
 
 namespace Blackbird.Stark.Trees.Nodes;
 
-public enum RbColor
+internal class RbNode<TK,TV>: BinaryNode<TK,TV> where TK:IComparable<TK>
 {
-    Red,
-    Black
-}
-
-public class RbNode<TK,TV> where TK:IComparable<TK>
-{
-    public TK Key { get; set; }
-    public TV Value { get; set; }
     public RbColor Color { get; set; }
-    
-    public RbNode<TK, TV> Parent { get; set; }
-    
-    public RbNode<TK, TV> Left { get; set; }
-    public RbNode<TK, TV> Right { get; set; }
+
+    public new RbNode<TK, TV> Parent
+    {
+        get => base.Parent as RbNode<TK, TV>; 
+        set => base.Parent = value;
+    }
+
+    public new RbNode<TK, TV> Left
+    {
+        get => base.Left as RbNode<TK,TV>; 
+        set => base.Left = value;
+    }
+
+    public new RbNode<TK, TV> Right
+    {
+        get => base.Right as RbNode<TK,TV>; 
+        set => base.Right = value;
+    }
 
     public RbNode(TK key, TV value)
     {

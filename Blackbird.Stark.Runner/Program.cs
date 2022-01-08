@@ -11,16 +11,11 @@ namespace Blackbird.Stark.Runner
     {
         static void Main(string[] args)
         {
-            var dt = DateTime.Now;
-            foreach (var d in dt.GetDatesOfDayOfWeek(DayOfWeek.Monday))
-            {
-                Console.WriteLine(d);
-            }
+            ITree<int, string> tree = new RbTree<int, string>();
             
-            
-            var tree = new RbTree<int, string>();
-            for(int i=0; i< 100; i++)
-                tree.Add(i,i.ToString());
+            tree.Add(5, "A");
+            tree.Add(3, "B");
+            tree.Add(1, "C");
             
             tree.PrintTree();
         }

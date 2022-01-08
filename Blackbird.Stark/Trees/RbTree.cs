@@ -5,9 +5,9 @@ using Blackbird.Stark.Trees.Nodes;
 
 namespace Blackbird.Stark.Trees;
 
-public class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
+public sealed class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
 {
-    private RbNode<TK, TV> _root;
+    internal RbNode<TK, TV> _root;
 
     public void Add(TK key, TV value)
     {
@@ -31,7 +31,7 @@ public class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
             Count--;
             return true;
         }
-        catch (Exception e)
+        catch
         {
             return false;
         }
@@ -143,12 +143,12 @@ public class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
 
     private void RbInsertFixup(RbNode<TK, TV> z)
     {
-        while (z.Parent != null && z.Parent.Color == RbColor.Red)
+        while (z.Parent is { Color: RbColor.Red })
         {
             if (z.Parent == z.Parent.Parent.Left)
             {
-                var y = z.Parent.Parent.Left;
-                if (y.Color == RbColor.Red)
+                var y = z.Parent.Parent.Right;
+                if (y is { Color: RbColor.Red })
                 {
                     z.Parent.Color = RbColor.Black;
                     y.Color = RbColor.Black;
@@ -170,8 +170,8 @@ public class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
             }
             else
             {
-                var y = z.Parent.Parent.Right;
-                if (y.Color == RbColor.Red)
+                var y = z.Parent.Parent.Left;
+                if (y is { Color: RbColor.Red })
                 {
                     z.Parent.Color = RbColor.Black;
                     y.Color = RbColor.Black;
@@ -203,7 +203,8 @@ public class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
             u.Parent.Left = v;
         else
             u.Parent.Right = v;
-        v.Parent = u.Parent;
+        if(v != null)
+            v.Parent = u.Parent;
     }
 
     private void Delete(RbNode<TK, TV> z)
@@ -247,7 +248,7 @@ public class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
 
     private void RbDeleteFixup(RbNode<TK, TV> x)
     {
-        while (x != _root && x.Color == RbColor.Black)
+        while (x != _root && x?.Color == RbColor.Black)
         {
             if (x == x.Parent.Left)
             {
@@ -317,7 +318,7 @@ public class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
             }
         }
 
-        x.Color = RbColor.Black;
+        if (x != null) x.Color = RbColor.Black;
     }
 
     private RbNode<TK, TV> Min(RbNode<TK, TV> node)

@@ -6,7 +6,7 @@ using Blackbird.Stark.Trees.Nodes;
 
 namespace Blackbird.Stark.Trees
 {
-    public class AvlTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,TV>> where TK : IComparable<TK>
+    public sealed class AvlTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,TV>> where TK : IComparable<TK>
     {
         internal AvlNode<TK, TV> _root;
         private readonly object _lock = new object();
