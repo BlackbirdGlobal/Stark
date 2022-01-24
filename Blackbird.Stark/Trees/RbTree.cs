@@ -1,11 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Schema;
+using Blackbird.Stark.Trees.Enumerators;
 using Blackbird.Stark.Trees.Nodes;
 
 namespace Blackbird.Stark.Trees;
 
-public sealed class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
+public sealed class RbTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,TV>> where TK:IComparable<TK>
 {
     internal RbNode<TK, TV> _root;
 
@@ -357,5 +359,15 @@ public sealed class RbTree<TK, TV> : ITree<TK, TV> where TK : IComparable<TK>
         }
 
         throw new KeyNotFoundException();
+    }
+
+    public IEnumerator<KeyValuePair<TK, TV>> GetEnumerator()
+    {
+        return new BinaryTreeEnumerator<TK, TV>(_root);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return new BinaryTreeEnumerator<TK,TV>(_root);
     }
 }

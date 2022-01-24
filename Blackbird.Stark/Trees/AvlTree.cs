@@ -333,7 +333,7 @@ namespace Blackbird.Stark.Trees
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return new BinaryTreeEnumerator<TK,TV>(_root);
         }
     }
 }
