@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Blackbird.Stark.Collections;
 using Blackbird.Stark.Extensions;
@@ -10,13 +11,13 @@ namespace Blackbird.Stark.Runner
     {
         static void Main(string[] args)
         {
-            var avl = new AvlTree<int, string>();
-            for(int i=0; i< 100; i++)
-                avl.Add(i,i.ToString());
+            ITree<int, string> tree = new RbTree<int, string>();
             
+            tree.Add(5, "A");
+            tree.Add(3, "B");
+            tree.Add(1, "C");
             
-            //avl.Remove(10);
-            avl.PrintTree();
+            tree.PrintTree();
         }
     }
 }

@@ -9,29 +9,41 @@ namespace Blackbird.Stark.Extensions
 {
     public static class TreeExtensions
     {
-        public static void PrintTree<K, V>(this ITree<K, V> self) where K: IComparable<K>
+        public static void PrintTree<TK, TV>(this ITree<TK, TV> self) where TK: IComparable<TK>
         {
-            if (self is AvlTree<K, V> avlTree)
+            switch (self)
             {
-                avlTree.PrintTree();
-            }
-
-            if (self is BinaryTree<K, V> binaryTree)
-            {
-                binaryTree.PrintTree();
+                case AvlTree<TK, TV> avlTree:
+                    avlTree.PrintTree();
+                    break;
+                case BinaryTree<TK, TV> binaryTree:
+                    binaryTree.PrintTree();
+                    break;
+                case RbTree<TK, TV> rbTree:
+                    rbTree.PrintTree();
+                    break;
             }
         }
-
-        public static void PrintTree<K, V>(this AvlTree<K, V> self) where K : IComparable<K>
+        
+        public static void PrintTree<TK, TV>(this AvlTree<TK, TV> self) where TK : IComparable<TK>
         {
             RenderTree(self._root);
         }
 
-        public static void PrintTree<K, V>(this BinaryTree<K, V> self) where K : IComparable<K>
+        public static void PrintTree<TK, TV>(this BinaryTree<TK, TV> self) where TK : IComparable<TK>
         {
             RenderTree(self._root);
         }
-        private static void RenderTree<K,V>(BinaryNode<K,V> tree) where K: IComparable<K>
+
+        public static void PrintTree<TK, TV>(this RbTree<TK, TV> self) where TK : IComparable<TK>
+        {
+            if(self.Count > 0)
+                RenderTree(self._root);
+            else
+                Console.WriteLine("RbTree is empty");
+        }
+
+        private static void RenderTree<TK,TV>(BinaryNode<TK,TV> tree) where TK: IComparable<TK>
         {
             var map = GenerateLevelMap(tree);
             var maxLevelHeight = map.Select(x => x.Count).Max();
@@ -106,7 +118,7 @@ namespace Blackbird.Stark.Extensions
                 Console.WriteLine(line);
             }
         }
-        private static string RenderKey<K>(int level, K key) where K : IComparable<K>
+        private static string RenderKey<TK>(int level, TK key) where TK : IComparable<TK>
         {
             var sb = new StringBuilder();
             sb.Append($"{level}:");
@@ -124,11 +136,11 @@ namespace Blackbird.Stark.Extensions
             sb.Append(key);
             return sb.ToString();
         }
-        private static List<List<BinaryNode<K,V>>> GenerateLevelMap<K,V>(BinaryNode<K,V> tree) where K: IComparable<K>
+        private static List<List<BinaryNode<TK,TV>>> GenerateLevelMap<TK,TV>(BinaryNode<TK,TV> tree) where TK: IComparable<TK>
         {
-            var levels = new List<List<BinaryNode<K,V>>>();
+            var levels = new List<List<BinaryNode<TK,TV>>>();
             int currentLevel = 0;
-            levels.Add(new List<BinaryNode<K,V>>() {tree});
+            levels.Add(new List<BinaryNode<TK,TV>>() {tree});
             var isThereUnprocessedNodes = true;
             while (isThereUnprocessedNodes)
             {
@@ -136,7 +148,7 @@ namespace Blackbird.Stark.Extensions
                     isThereUnprocessedNodes = false;
                 else
                 {
-                    levels.Add(new List<BinaryNode<K, V>>());
+                    levels.Add(new List<BinaryNode<TK, TV>>());
                     foreach (var node in levels[currentLevel])
                     {
                         if (node.HasChildren)
