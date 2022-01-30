@@ -42,6 +42,7 @@ public sealed class RbTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,
     public void Clear()
     {
         _root = null;
+        Count = 0;
     }
 
     public int Count { get; private set; }
