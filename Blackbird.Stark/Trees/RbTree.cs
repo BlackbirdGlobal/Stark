@@ -10,12 +10,18 @@ namespace Blackbird.Stark.Trees;
 public sealed class RbTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,TV>> where TK:IComparable<TK>
 {
     internal RbNode<TK, TV> _root;
+    private readonly object _lock = new object();
 
     public void Add(TK key, TV value)
     {
-        var node = new RbNode<TK, TV>(key, value);
-        Insert(node);
-        Count++;
+        if (key == null)
+            throw new ArgumentNullException(nameof(key));
+        lock (_lock)
+        {
+            var node = new RbNode<TK, TV>(key, value);
+            Insert(node);
+            Count++;
+        }
     }
 
     public TV Get(TK key)
@@ -28,10 +34,13 @@ public sealed class RbTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,
     {
         try
         {
-            var node = Find(key);
-            Delete(node);
-            Count--;
-            return true;
+            lock (_lock)
+            {
+                var node = Find(key);
+                Delete(node);
+                Count--;
+                return true;
+            }
         }
         catch
         {
@@ -41,8 +50,11 @@ public sealed class RbTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,
 
     public void Clear()
     {
-        _root = null;
-        Count = 0;
+        lock (_lock)
+        {
+            _root = null;
+            Count = 0;
+        }
     }
 
     public int Count { get; private set; }

@@ -300,6 +300,7 @@ namespace Blackbird.Stark.Trees
             lock (_lock)
             {
                 _root = null;
+                Count = 0;
             }
         }
 
