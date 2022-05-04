@@ -7,44 +7,48 @@ namespace Blackbird.Stark.Math;
 
 public static class Hash
 {
-    public static int Calculate(object obj, int seed = 3, int offset = 7)
+    /// <summary>
+    /// Calculate hash for object using multiplication algorithm.
+    /// Each object or array is a sum of hashes of it's parts.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="seed"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
+    public static int CalculateForObject(object obj, int seed = 3, int offset = 7)
     {
         var objType = obj.GetType();
         if (objType.IsPrimitive || obj is string)
             return obj.GetHashCode();
 
+        var result = new BigInteger(seed);
+        
         if (objType.IsArray || obj is IEnumerable)
         {
             var arr = obj as IEnumerable;
-            var result = new BigInteger(seed);
             foreach (var e in arr)
             {
                 unchecked
                 {
-                    var a = offset * Calculate(e);
-                    if (a != 0)
-                    {
-                        result *= a;
-                        if (result == 0)
-                            throw new InvalidOperationException();
-                    }
-                    else
-                    {
-                        throw new ArgumentException($"{a} / {e}");
-                    }
+                    var a = offset * CalculateForObject(e, seed, offset);
+                    result += a;
                 }
             }
-            return (int) (result % int.MaxValue);
         }
 
         if (objType.IsClass)
         {
             foreach (var member in objType.GetFields(BindingFlags.Instance))
             {
-                
+                unchecked
+                {
+                    var v = member.GetValue(obj);
+                    var a = offset * CalculateForObject(v, seed, offset);
+                    result += a;
+                }
             }
         }
-        
-        return 1;
+
+        return (int) (result % int.MaxValue);
     }
 }
