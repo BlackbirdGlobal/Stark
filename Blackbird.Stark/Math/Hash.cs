@@ -10,10 +10,11 @@ public static class Hash
     /// <summary>
     /// Calculate hash for object using multiplication algorithm.
     /// Each object or array is a sum of hashes of it's parts.
+    /// seed + offset * h(x1) + offset * h(x2) + ...
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="seed"></param>
-    /// <param name="offset"></param>
+    /// <param name="obj">object to calculate hash for</param>
+    /// <param name="seed">initial sum to add for</param>
+    /// <param name="offset">offset for each hash value</param>
     /// <returns></returns>
     public static int CalculateForObject(object obj, int seed = 3, int offset = 7)
     {
