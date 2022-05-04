@@ -29,11 +29,8 @@ public static class Hash
             var arr = obj as IEnumerable;
             foreach (var e in arr)
             {
-                unchecked
-                {
-                    var a = offset * CalculateForObject(e, seed, offset);
-                    result += a;
-                }
+                var a = offset * CalculateForObject(e, seed, offset);
+                result += a;
             }
         }
 
@@ -41,15 +38,12 @@ public static class Hash
         {
             foreach (var member in objType.GetFields(BindingFlags.Instance))
             {
-                unchecked
-                {
-                    var v = member.GetValue(obj);
-                    var a = offset * CalculateForObject(v, seed, offset);
-                    result += a;
-                }
+                var v = member.GetValue(obj);
+                var a = offset * CalculateForObject(v, seed, offset);
+                result += a;
             }
         }
-
+        
         return (int) (result % int.MaxValue);
     }
 }

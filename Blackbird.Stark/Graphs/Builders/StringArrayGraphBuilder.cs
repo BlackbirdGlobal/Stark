@@ -26,18 +26,8 @@ namespace Blackbird.Stark.Graphs.Builders
             while (_queue.Count > 0)
             {
                 var n = _queue.Dequeue();
-                var node = new GraphNode<char, int> { Value = n.Value, Status = DiscoveryStatus.Undiscovered, Parent = n.Parent };
+                var node = new GraphNode<char, int> { Value = n.Value, Status = DiscoveryStatus.Undiscovered };
                 processed[n.I, n.J] = true;
-                if (node.Parent == null)
-                {
-                    if (root != null)
-                        throw new InvalidOperationException();
-                    root = node;
-                }
-                else
-                {
-                    node.Parent.Children.Add(node);
-                }
                 //enqueue children
                 //upper
                 if (n.I - 1 >= 0 && s[n.I - 1][n.J] != Obstacle && processed[n.I - 1, n.J] == false)
