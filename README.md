@@ -34,5 +34,5 @@ Stark is a computer science algorithms library. It is designed to build new algo
 
 ---
 <h3 align="center">
-:blue_heart: Crafted with love in Kyiv :yellow_heart:
+:yellow_heart: Crafted with love in Kyiv :blue_heart:
 </h3>
