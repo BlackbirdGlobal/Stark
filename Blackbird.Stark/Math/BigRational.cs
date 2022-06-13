@@ -261,8 +261,9 @@ namespace Blackbird.Stark.Math
         /// </summary>
         /// <param name="precision">value represents number of signs after the separator</param>
         /// <returns></returns>
-        public string ToString(int precision = 512)
+        public string ToString(uint precision = 512)
         {
+            if (precision <= 0) throw new ArgumentOutOfRangeException(nameof(precision));
             var whole = BigInteger.Divide(_numerator, Denominator).ToString("R", CultureInfo.InvariantCulture);
             string fraction = default;
             var r = BigInteger.Remainder(_numerator, Denominator);
@@ -283,12 +284,7 @@ namespace Blackbird.Stark.Math
             fraction = fraction ?? "0";
             return $"{whole}.{fraction}";
         }
-
-        public override string ToString()
-        {
-            return ToString();
-        }
-
+        
         public void OnDeserialization(object sender)
         {
             try {
