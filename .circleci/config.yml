@@ -19,7 +19,7 @@ jobs:
           command: "dotnet restore"
       - run:
           name: "Build"
-          command: "dotnet build"
+          command: "dotnet build --configuration Release"
       - run:
           name: "Run tests"
           command: "dotnet test -v n --no-build --logger \"trx;logfilename=mytests.trx\" --results-directory ./TestResults"
