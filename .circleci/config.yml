@@ -17,6 +17,9 @@ jobs:
       - run:
           name: ".NET Restore"
           command: "dotnet restore"
+     - run:
+         name: "Build"
+         command: "dotnet build"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
