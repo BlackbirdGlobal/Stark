@@ -24,7 +24,7 @@ jobs:
           name: "Run tests"
           command: "dotnet test -v n --no-build --logger \"trx;logfilename=mytests.trx\" --results-directory ./TestResults"
       - run:
-          name: test results
+          name: "Parse test results"
           when: always
           command: |
               dotnet tool install -g trx2junit
