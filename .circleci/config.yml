@@ -22,7 +22,9 @@ jobs:
           command: "dotnet build"
       - run:
           name: "Run tests"
-          command: "dotnet test"
+          command: "dotnet test -v n --results-directory:test_coverage"
+      - store_test_results:
+          path: "test_coverage" 
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
