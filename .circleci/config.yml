@@ -22,7 +22,7 @@ jobs:
           command: "dotnet build"
       - run:
           name: "Run tests"
-          command: "dotnet test -v n --results-directory:test_coverage"
+          command: "dotnet test -v n --results-directory test_coverage"
       - store_test_results:
           path: "test_coverage" 
 
