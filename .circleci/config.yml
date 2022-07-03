@@ -22,7 +22,7 @@ jobs:
           command: "dotnet build"
       - run:
           name: "Run tests"
-          command: "dotnet test -v n --logger "trx;logfilename=mytests.trx" --results-directory ./TestResults"
+          command: "dotnet test -v n --logger \"trx;logfilename=mytests.trx\" --results-directory ./TestResults"
       - store_test_results:
           path: "TestResults" 
 
