@@ -24,7 +24,7 @@ jobs:
           name: "Run tests"
           command: "dotnet test -v n"
       - store_test_results:
-          path: "TestResults" 
+          path: "Blackbird.Stark.UnitTests/TestResults" 
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
