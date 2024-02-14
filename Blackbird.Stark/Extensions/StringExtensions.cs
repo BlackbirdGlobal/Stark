@@ -36,5 +36,19 @@ namespace Blackbird.Stark.Extensions
 
             return true;
         }
+        
+        public static bool IsPalindrome(this string self){
+            var l = 0;
+            var r = self.Length - 1;
+            while (l <= r)
+            {
+                if (self[l] != self[r])
+                    return false;
+                l++;
+                r--;
+            }
+
+            return true;
+        }
     }
 }
