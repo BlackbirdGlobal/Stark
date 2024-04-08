@@ -284,7 +284,12 @@ namespace Blackbird.Stark.Math
             fraction = fraction ?? "0";
             return $"{whole}.{fraction}";
         }
-        
+
+        public override string ToString()
+        {
+            return this.ToString();
+        }
+
         public void OnDeserialization(object sender)
         {
             try {

@@ -58,4 +58,22 @@ public static class CollectionsExtensions
 
         return true;
     }
+    
+    public static Dictionary<T, int> Counter<T>(this IEnumerable<T> self)
+    {
+        var result = new Dictionary<T, int>();
+        foreach (var item in self)
+        {
+            if (result.ContainsKey(item))
+            {
+                result[item]++;
+            }
+            else
+            {
+                result.Add(item, 1);
+            }
+        }
+
+        return result;
+    }
 }
