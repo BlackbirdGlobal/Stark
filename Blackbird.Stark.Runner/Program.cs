@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Blackbird.Stark.Collections;
 using Blackbird.Stark.Extensions;
 using Blackbird.Stark.Trees;
+using Blackbird.Stark.Math;
 
 namespace Blackbird.Stark.Runner
 {
@@ -11,13 +12,9 @@ namespace Blackbird.Stark.Runner
     {
         static void Main(string[] args)
         {
-            ITree<int, string> tree = new RbTree<int, string>();
-            
-            tree.Add(5, "A");
-            tree.Add(3, "B");
-            tree.Add(1, "C");
-            
-            tree.PrintTree();
+            Console.WriteLine(Calculations.Factorial(5));
+            Console.WriteLine(Calculations.Factorial(2));
+            Console.WriteLine(Calculations.Combinations(3, 2));
         }
     }
 }
