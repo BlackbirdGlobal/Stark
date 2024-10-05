@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace Blackbird.Stark.Math;
 
@@ -11,7 +12,7 @@ public static class Calculations
     /// <param name="n">number of total objects</param>
     /// <param name="r">number of objects chosen at once</param>
     /// <returns></returns>
-    public static long Combinations(int n, int r)
+    public static BigInteger Combinations(int n, int r)
     {
         return Factorial(n) / Factorial(r) * Factorial(n - r);
     }
@@ -22,13 +23,13 @@ public static class Calculations
     /// <param name="n">number of total objects</param>
     /// <param name="r">number of objects chosen at once</param>
     /// <returns></returns>
-    public static long Permutations(int n, int r)
+    public static BigInteger Permutations(int n, int r)
     {
         return Factorial(n) / Factorial(n-r);
     }
 
-    private static readonly List<long> _cache = new List<long>();
-    public static long Factorial(int n)
+    private static readonly List<BigInteger> _cache = new List<BigInteger>(){1};
+    public static BigInteger Factorial(int n)
     {
         if (_cache.Count > n)
             return _cache[n];
