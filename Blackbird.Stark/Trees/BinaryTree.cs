@@ -29,7 +29,7 @@ namespace Blackbird.Stark.Trees
 
                 var parent = FindParentToInsert(node.Key);
                 node.Parent = parent;
-                if (node.Key.CompareTo(parent.Key) == -1)
+                if (node.Key.CompareTo(parent.Key) < 0)
                 {
                     parent.Left = node;
                 }
@@ -58,19 +58,15 @@ namespace Blackbird.Stark.Trees
 
             while (result.HasChildren || result.Key.CompareTo(key) == 0)
             {
-                switch (key.CompareTo(result.Key))
-                {
-                    case int cmp when cmp == -1 && result.HasLeftChild:
-                        result = result.Left;
-                        break;
-                    case int cmp when cmp == 1 && result.HasRightChild:
-                        result = result.Right;
-                        break;
-                    case int cmp when cmp == 0:
-                        return result;
-                    default:
-                        return null;
-                }
+                var cmp = key.CompareTo(result.Key);
+                if (cmp == 0)
+                    return result;
+                if (cmp < 0 && result.HasLeftChild)
+                    result = result.Left;
+                else if (cmp > 0 && result.HasRightChild)
+                    result = result.Right;
+                else
+                    return null;
             }
             return null;
         }
@@ -163,17 +159,13 @@ namespace Blackbird.Stark.Trees
             var result = _root;
             while (result.HasChildren)
             {
-                switch (key.CompareTo(result.Key))
-                {
-                    case int cmp when cmp == -1 && result.HasLeftChild:
-                        result = result.Left;
-                        break;
-                    case int cmp when cmp == 1 && result.HasRightChild:
-                        result = result.Right;
-                        break;
-                    default:
-                        return result;
-                }
+                var cmp = key.CompareTo(result.Key);
+                if (cmp < 0 && result.HasLeftChild)
+                    result = result.Left;
+                else if (cmp > 0 && result.HasRightChild)
+                    result = result.Right;
+                else
+                    return result;
             }
             return result;
         }

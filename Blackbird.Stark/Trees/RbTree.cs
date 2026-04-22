@@ -65,17 +65,9 @@ public sealed class RbTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,
         while (x != null)
         {
             var cmp = key.CompareTo(x.Key);
-            switch (cmp)
-            {
-                case 0:
-                    return true;
-                case 1:
-                    x = x.Right;
-                    break;
-                case -1:
-                    x = x.Left;
-                    break;
-            }
+            if (cmp == 0)
+                return true;
+            x = cmp > 0 ? x.Right : x.Left;
         }
 
         return false;
@@ -133,7 +125,7 @@ public sealed class RbTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,
         {
             y = x;
             //z.Key < x.Key?
-            x = z.Key.CompareTo(x.Key) == -1 ? x.Left : x.Right;
+            x = z.Key.CompareTo(x.Key) < 0 ? x.Left : x.Right;
         }
 
         z.Parent = y;
@@ -144,7 +136,7 @@ public sealed class RbTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,
         else
         {
             //z.Key < y.Key
-            if (z.Key.CompareTo(y.Key) == -1)
+            if (z.Key.CompareTo(y.Key) < 0)
                 y.Left = z;
             else
                 y.Right = z;
@@ -358,17 +350,9 @@ public sealed class RbTree<TK, TV> : ITree<TK, TV>, IEnumerable<KeyValuePair<TK,
         while (x != null)
         {
             var cmp = key.CompareTo(x.Key);
-            switch (cmp)
-            {
-                case 0:
-                    return x;
-                case 1:
-                    x = x.Right;
-                    break;
-                case -1:
-                    x = x.Left;
-                    break;
-            }
+            if (cmp == 0)
+                return x;
+            x = cmp > 0 ? x.Right : x.Left;
         }
 
         throw new KeyNotFoundException();

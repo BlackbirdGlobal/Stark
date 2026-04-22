@@ -27,7 +27,7 @@ namespace Blackbird.Stark.Trees
                 {
                     var parent = FindParentToInsert(node.Key);
                     node.Parent = parent;
-                    if (node.Key.CompareTo(parent.Key) == -1)
+                    if (node.Key.CompareTo(parent.Key) < 0)
                     {
                         parent.Left = node;
                     }
@@ -45,22 +45,23 @@ namespace Blackbird.Stark.Trees
                         parent.RefreshHeight();
                         var balance = parent.Balance;
 
-                        switch (balance)
+                        if (balance > 1 && node.Key.CompareTo(parent.Left.Key) < 0)
                         {
-                            case int b when b > 1 && node.Key.CompareTo(parent.Left.Key) == -1:
-                                parent = RightRotate(parent);
-                                break;
-                            case int b when b > 1 && node.Key.CompareTo(parent.Left.Key) == 1:
-                                parent.Left = LeftRotate(parent.Left);
-                                parent = RightRotate(parent);
-                                break;
-                            case int b when b < -1 && node.Key.CompareTo(parent.Right.Key) == 1:
-                                parent = LeftRotate(parent);
-                                break;
-                            case int b when b < -1 && node.Key.CompareTo(parent.Right.Key) == -1:
-                                parent.Right = RightRotate(parent.Right);
-                                parent = LeftRotate(parent);
-                                break;
+                            parent = RightRotate(parent);
+                        }
+                        else if (balance > 1 && node.Key.CompareTo(parent.Left.Key) > 0)
+                        {
+                            parent.Left = LeftRotate(parent.Left);
+                            parent = RightRotate(parent);
+                        }
+                        else if (balance < -1 && node.Key.CompareTo(parent.Right.Key) > 0)
+                        {
+                            parent = LeftRotate(parent);
+                        }
+                        else if (balance < -1 && node.Key.CompareTo(parent.Right.Key) < 0)
+                        {
+                            parent.Right = RightRotate(parent.Right);
+                            parent = LeftRotate(parent);
                         }
 
                         _root = parent.IsRoot ? parent : _root;
@@ -142,17 +143,13 @@ namespace Blackbird.Stark.Trees
             var result = _root;
             while (result.HasChildren)
             {
-                switch (key.CompareTo(result.Key))
-                {
-                    case int cmp when cmp == -1 && result.HasLeftChild:
-                        result = result.Left;
-                        break;
-                    case int cmp when cmp == 1 && result.HasRightChild:
-                        result = result.Right;
-                        break;
-                    default:
-                        return result;
-                }
+                var cmp = key.CompareTo(result.Key);
+                if (cmp < 0 && result.HasLeftChild)
+                    result = result.Left;
+                else if (cmp > 0 && result.HasRightChild)
+                    result = result.Right;
+                else
+                    return result;
             }
 
             return result;
@@ -169,17 +166,10 @@ namespace Blackbird.Stark.Trees
             var it = _root;
             while (it != null)
             {
-                switch (it.Key.CompareTo(key))
-                {
-                    case 0:
-                        return it;
-                    case 1:
-                        it = it.Left;
-                        break;
-                    case -1:
-                        it = it.Right;
-                        break;
-                }
+                var cmp = it.Key.CompareTo(key);
+                if (cmp == 0)
+                    return it;
+                it = cmp > 0 ? it.Left : it.Right;
             }
 
             return default;
@@ -194,105 +184,86 @@ namespace Blackbird.Stark.Trees
                 var node = GetNode(key);
                 if (node == null)
                     return false;
-                if (node.HasChildren)
-                {
-                    if (node.HasBothChildren)
-                    {
-                        var successor = FindClosestSmallerValue(node);
-                        if (!successor.Parent.IsRoot)
-                            successor.Parent.Right = successor.Left;
-                        if (successor.HasLeftChild)
-                            successor.Left.Parent = successor.Parent;
-                        successor.Left = node.Left == successor ? null : node.Left;
-                        successor.Right = node.Right;
-                        successor.Parent = node.Parent;
-                        if (successor.HasRightChild) successor.Right.Parent = successor;
-                        if (successor.HasLeftChild) successor.Left.Parent = successor;
 
-                        if (node.Parent != null)
-                        {
-                            node.Parent.Left = node.Parent.Left == node ? successor : node.Parent.Left;
-                            node.Parent.Right = node.Parent.Right == node ? successor : node.Parent.Right;
-                        }
-                        else
-                        {
-                            _root = successor;
-                        }
-                    }
-                    else
-                    {
-                        var child = node.Left ?? node.Right;
-                        child.Parent = node.Parent;
-                        if (node.Parent != null)
-                        {
-                            node.Parent.Left = node.Parent.Left == node ? child : node.Parent.Left;
-                            node.Parent.Right = node.Parent.Right == node ? child : node.Parent.Right;
-                            node.Parent = node.Left = node.Right = null;
-                        }
-                        else
-                        {
-                            node.Left = node.Right = null;
-                            _root = child;
-                        }
-                    }
-                }
-                else
-                {
-                    if (node.Parent != null)
-                    {
-                        node.Parent.Left = node.Parent.Left == node ? null : node.Parent.Left;
-                        node.Parent.Right = node.Parent.Right == node ? null : node.Parent.Right;
-                        node.Parent = null;
-                    }
-                    else
-                    {
-                        _root = null;
-                    }
-                }
-
+                var rebalanceFrom = DetachNodeAndReturnParent(node);
                 Count--;
-                if (_root == null)
-                    return true;
-
-                var balance = _root.Balance;
-
-                // If this node becomes unbalanced,  
-                // then there are 4 cases  
-                // Left Left Case  
-                if (balance > 1 && _root.Left.Balance >= 0)
-                    _root = RightRotate(_root);
-
-                // Left Right Case  
-                if (balance > 1 && _root.Left.Balance < 0)
-                {
-                    _root.Left = LeftRotate(_root.Left);
-                    _root = RightRotate(_root);
-                }
-
-                // Right Right Case  
-                if (balance < -1 && _root.Right.Balance <= 0)
-                    _root = LeftRotate(_root);
-
-                // Right Left Case  
-                if (balance < -1 && _root.Right.Balance > 0)
-                {
-                    _root.Right = RightRotate(_root.Right);
-                    _root = LeftRotate(_root);
-                }
-
+                RebalanceUpward(rebalanceFrom);
                 return true;
             }
         }
 
-        private static AvlNode<TK, TV> FindClosestSmallerValue(AvlNode<TK, TV> node)
+        // Standard BST deletion. When the target has two children it adopts
+        // the in-order successor's key/value and then removes that successor,
+        // which by construction has at most one child. Returns the parent
+        // where height/balance fixup needs to start (or null if the tree
+        // just became empty).
+        private AvlNode<TK, TV> DetachNodeAndReturnParent(AvlNode<TK, TV> node)
         {
-            var tmp = node.Left;
-            while (tmp.Right != null)
+            if (node.HasBothChildren)
             {
-                tmp = tmp.Right;
+                var successor = MinOf(node.Right);
+                node.Key = successor.Key;
+                node.Value = successor.Value;
+                return DetachNodeAndReturnParent(successor);
             }
 
-            return tmp;
+            var child = node.Left ?? node.Right;
+            var parent = node.Parent;
+
+            if (child != null)
+                child.Parent = parent;
+
+            if (parent == null)
+            {
+                _root = child;
+            }
+            else if (parent.Left == node)
+            {
+                parent.Left = child;
+            }
+            else
+            {
+                parent.Right = child;
+            }
+
+            return parent;
+        }
+
+        // Walk from the given node up to the root, refreshing heights and
+        // rotating whenever the AVL invariant is violated.
+        private void RebalanceUpward(AvlNode<TK, TV> node)
+        {
+            while (node != null)
+            {
+                node.RefreshHeight();
+                var balance = node.Balance;
+                var rotated = node;
+
+                if (balance > 1)
+                {
+                    if (node.Left.Balance < 0)
+                        node.Left = LeftRotate(node.Left);
+                    rotated = RightRotate(node);
+                }
+                else if (balance < -1)
+                {
+                    if (node.Right.Balance > 0)
+                        node.Right = RightRotate(node.Right);
+                    rotated = LeftRotate(node);
+                }
+
+                if (rotated.Parent == null)
+                    _root = rotated;
+
+                node = rotated.Parent;
+            }
+        }
+
+        private static AvlNode<TK, TV> MinOf(AvlNode<TK, TV> node)
+        {
+            while (node.Left != null)
+                node = node.Left;
+            return node;
         }
 
         public void Clear()
@@ -311,17 +282,10 @@ namespace Blackbird.Stark.Trees
             var it = _root;
             while (it != null)
             {
-                switch (it.Key.CompareTo(key))
-                {
-                    case 0:
-                        return true;
-                    case 1:
-                        it = it.Left;
-                        break;
-                    case -1:
-                        it = it.Right;
-                        break;
-                }
+                var cmp = it.Key.CompareTo(key);
+                if (cmp == 0)
+                    return true;
+                it = cmp > 0 ? it.Left : it.Right;
             }
 
             return false;
