@@ -49,7 +49,7 @@ namespace Blackbird.Stark.Math
                 _numerator   = BigInteger.Zero;
                 _denominator = BigInteger.One;
             }
-            else if (_denominator.Sign < 0) {
+            else if (denominator.Sign < 0) {
                 _numerator = BigInteger.Negate(numerator);
                 _denominator = BigInteger.Negate(denominator);
             }
@@ -253,7 +253,11 @@ namespace Blackbird.Stark.Math
         }
 
         public override int GetHashCode() {
-            return (_numerator / Denominator).GetHashCode();
+            // BigRational is always stored in reduced form, so hashing the
+            // (numerator, denominator) pair respects the Equals contract.
+            unchecked {
+                return (_numerator.GetHashCode() * 397) ^ Denominator.GetHashCode();
+            }
         }
         
         /// <summary>

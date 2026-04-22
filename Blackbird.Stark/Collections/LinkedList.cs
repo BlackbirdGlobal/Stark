@@ -32,11 +32,12 @@ namespace Blackbird.Stark.Collections
         }
 
         public bool Contains(T item)
-        {            
+        {
+            var comparer = EqualityComparer<T>.Default;
             var tmp = _head;
             while (tmp != null)
             {
-                if (tmp.Value.Equals(item))
+                if (comparer.Equals(tmp.Value, item))
                     return true;
                 tmp = tmp.Next;
             }
@@ -70,10 +71,11 @@ namespace Blackbird.Stark.Collections
 
         public bool Remove(T item)
         {
+            var comparer = EqualityComparer<T>.Default;
             var tmp = _head;
             while (tmp != null)
             {
-                if (item.Equals(tmp.Value))
+                if (comparer.Equals(tmp.Value, item))
                 {
                     if (tmp.Previous != null)
                         tmp.Previous.Next = tmp.Next;
@@ -95,11 +97,12 @@ namespace Blackbird.Stark.Collections
 
         public int IndexOf(T item)
         {
+            var comparer = EqualityComparer<T>.Default;
             int i = 0;
             var tmp = _head;
             while (tmp != null)
             {
-                if (item.Equals(tmp.Value))
+                if (comparer.Equals(tmp.Value, item))
                     return i;
                 i++;
                 tmp = tmp.Next;
@@ -109,27 +112,30 @@ namespace Blackbird.Stark.Collections
 
         public void Insert(int index, T item)
         {
+            if (index < 0 || index > Count)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            if (index == Count)
+            {
+                Add(item);
+                return;
+            }
+
             var node = new ListNode<T>(item);
             if (index == 0)
             {
                 node.Next = _head;
+                _head.Previous = node;
                 _head = node;
-                Count++;
-                return;
             }
-
-            if (index == Count)
+            else
             {
-                node.Previous = _tail;
-                _tail = node;
-                Count++;
-                return;
+                var middle = FindNode(index);
+                node.Next = middle;
+                node.Previous = middle.Previous;
+                middle.Previous.Next = node;
+                middle.Previous = node;
             }
-
-            var middle = FindNode(index);
-            node.Next = middle;
-            node.Previous = middle.Previous;
-            node.Previous.Next = node;
             Count++;
         }
 
