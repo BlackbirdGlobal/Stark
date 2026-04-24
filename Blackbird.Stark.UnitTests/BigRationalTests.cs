@@ -37,6 +37,7 @@ namespace Blackbird.Stark.UnitTests
         public void ToString_Zero_ReturnsZeroDotZero()
         {
             var result = BigRational.Zero.ToString();
+            Assert.Equal("0.0", result);
         }
 
         [Fact]

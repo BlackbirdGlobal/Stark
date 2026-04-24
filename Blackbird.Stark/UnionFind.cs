@@ -1,3 +1,5 @@
+using System;
+
 namespace Blackbird.Stark;
 
 public class UnionFind
@@ -40,6 +42,8 @@ public class UnionFind
 
     public int Find(int x)
     {
+        if (x < 1 || x >= _parents.Length)
+            throw new ArgumentOutOfRangeException(nameof(x));
         if (_parents[x] != x)
             _parents[x] = Find(_parents[x]);
         return _parents[x];
