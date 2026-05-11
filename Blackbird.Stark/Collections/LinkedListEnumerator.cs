@@ -20,7 +20,7 @@ namespace Blackbird.Stark.Collections
             Current = default(T);
         }
 
-        object IEnumerator.Current => new LinkedListEnumerator<T>(_currentNode);
+        object IEnumerator.Current => Current;
 
         public bool MoveNext()
         {

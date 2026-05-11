@@ -1,20 +1,19 @@
-using System.Collections.Generic;
+using System;
 
 namespace Blackbird.Stark;
 
 public class UnionFind
 {
-    private Dictionary<int, int> _parents = new Dictionary<int, int>();
-    private Dictionary<int, int> _rank = new Dictionary<int, int>();
+    private readonly int[] _parents;
+    private readonly int[] _rank;
 
-    
     public UnionFind(int n)
     {
-
+        _parents = new int[n + 1];
+        _rank = new int[n + 1];
         for (int i = 1; i <= n; i++)
         {
             _parents[i] = i;
-            _rank[i] = 0;
         }
     }
 
@@ -22,41 +21,31 @@ public class UnionFind
     {
         var px = Find(x);
         var py = Find(y);
-        //if they alredy united there is a cycle
         if (px == py)
             return false;
 
-        //get parent's ranks
-        var rpx = _rank[px];
-        var rpy = _rank[py];
-
-        if (rpx > rpy)
+        if (_rank[px] > _rank[py])
         {
             _parents[py] = px;
         }
-
-        if (rpx < rpy)
+        else if (_rank[px] < _rank[py])
         {
             _parents[px] = py;
         }
-
-        if (rpx == rpy)
+        else
         {
             _parents[py] = px;
-            _rank[px] += 1;
+            _rank[px]++;
         }
         return true;
     }
 
     public int Find(int x)
     {
-        var p = _parents[x];
-        //path compression
-        while (p != _parents[p])
-        {
-            _parents[x] = _parents[_parents[x]];
-            p = _parents[x];
-        }
-        return p;
+        if (x < 1 || x >= _parents.Length)
+            throw new ArgumentOutOfRangeException(nameof(x));
+        if (_parents[x] != x)
+            _parents[x] = Find(_parents[x]);
+        return _parents[x];
     }
 }

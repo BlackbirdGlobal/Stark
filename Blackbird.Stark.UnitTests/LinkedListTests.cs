@@ -79,5 +79,74 @@ namespace Blackbird.Stark.UnitTests
             Assert.Equal(4,lst.Count);
             Assert.Equal(3, lst[2]);
         }
+
+        [Fact]
+        public void Insert_AtTail_LinksForwardAndBackward()
+        {
+            var lst = new LinkedList<int> { 1, 2, 3 };
+            lst.Insert(3, 4);
+            Assert.Equal(4, lst.Count);
+            Assert.Equal(new[] { 1, 2, 3, 4 }, lst);
+            // Remove the old tail — if Next pointers were broken, new tail would not be reachable.
+            lst.Remove(3);
+            Assert.Equal(new[] { 1, 2, 4 }, lst);
+            // Remove the new tail — forces back-pointer use.
+            lst.Remove(4);
+            Assert.Equal(new[] { 1, 2 }, lst);
+        }
+
+        [Fact]
+        public void Insert_AtHead_LinksOldHeadBackPointer()
+        {
+            var lst = new LinkedList<int> { 2, 3 };
+            lst.Insert(0, 1);
+            Assert.Equal(new[] { 1, 2, 3 }, lst);
+            // Remove the head — uses forward pointers.
+            lst.Remove(1);
+            Assert.Equal(new[] { 2, 3 }, lst);
+        }
+
+        [Fact]
+        public void Insert_InMiddle_FixesBothDirections()
+        {
+            var lst = new LinkedList<int> { 1, 2, 4 };
+            lst.Insert(2, 3);
+            // Remove the node before the insertion point — requires the
+            // inserted node's Previous backlink from 4 to point through 3.
+            lst.Remove(2);
+            Assert.Equal(new[] { 1, 3, 4 }, lst);
+        }
+
+        [Fact]
+        public void Insert_OutOfRange_Throws()
+        {
+            var lst = new LinkedList<int> { 1 };
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => lst.Insert(-1, 0));
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => lst.Insert(2, 0));
+        }
+
+        [Fact]
+        public void Contains_NullItem_DoesNotThrow()
+        {
+            var lst = new LinkedList<string> { "a", null, "b" };
+            Assert.True(lst.Contains(null));
+            Assert.False(lst.Contains("missing"));
+        }
+
+        [Fact]
+        public void Remove_NullItem_Succeeds()
+        {
+            var lst = new LinkedList<string> { "a", null, "b" };
+            Assert.True(lst.Remove(null));
+            Assert.Equal(2, lst.Count);
+            Assert.False(lst.Contains(null));
+        }
+
+        [Fact]
+        public void IndexOf_NullItem_ReturnsPosition()
+        {
+            var lst = new LinkedList<string> { "a", null, "b" };
+            Assert.Equal(1, lst.IndexOf(null));
+        }
     }
 }
